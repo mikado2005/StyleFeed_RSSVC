@@ -31,6 +31,11 @@ class StyleFeed_RSSVC: UIViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
     override func shouldPerformSegue(withIdentifier identifier: String,
                                      sender: Any?) -> Bool {
         if let cell = sender as? RSSFeedPostWithImageTableCell,

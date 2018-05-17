@@ -20,5 +20,11 @@ class WebPageViewerViewController: UIViewController {
             webKitView.load(URLRequest(url: url))
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+
 
 }

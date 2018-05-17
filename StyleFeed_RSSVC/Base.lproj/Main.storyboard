@@ -15,7 +15,7 @@
         </array>
     </customFonts>
     <scenes>
-        <!--Style FeedRSSVC-->
+        <!--Fashion & Beauty-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="StyleFeed_RSSVC" customModule="StyleFeed_RSSVC" customModuleProvider="target" sceneMemberID="viewController">
@@ -131,7 +131,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" id="bED-hW-4xa"/>
+                    <navigationItem key="navigationItem" title="Fashion &amp; Beauty" id="cmc-Wd-y5I"/>
                     <connections>
                         <outlet property="feedPostsTableView" destination="mpv-a4-gc9" id="y6s-Vf-cqx"/>
                     </connections>
@@ -152,6 +152,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" red="0.83137254900000002" green="0.83137254900000002" blue="0.83137254900000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <wkWebViewConfiguration key="configuration">
+                                    <dataDetectorTypes key="dataDetectorTypes"/>
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                                     <wkPreferences key="preferences"/>
                                 </wkWebViewConfiguration>
