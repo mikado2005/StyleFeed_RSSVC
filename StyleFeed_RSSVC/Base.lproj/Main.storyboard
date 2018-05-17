@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="okU-z7-cRd">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -24,7 +24,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mpv-a4-gc9">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="RSSFeedPostCellWithImage" rowHeight="402" id="k17-2a-xRL" customClass="RSSFeedPostWithImageTableCell" customModule="StyleFeed_RSSVC" customModuleProvider="target">
@@ -112,6 +112,7 @@
                                             <outlet property="postImageHeightConstraint" destination="6fi-Of-FMQ" id="Yzy-Vo-6nf"/>
                                             <outlet property="postImageView" destination="hYh-R4-8uN" id="3Yj-k1-Mmv"/>
                                             <outlet property="postTitleLabel" destination="aSf-Wj-7Tb" id="52H-zm-Zsj"/>
+                                            <segue destination="zF5-kk-VS9" kind="show" id="Smk-Tg-y4w"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -130,13 +131,66 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <navigationItem key="navigationItem" id="bED-hW-4xa"/>
                     <connections>
                         <outlet property="feedPostsTableView" destination="mpv-a4-gc9" id="y6s-Vf-cqx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="36" y="32.833583208395808"/>
+            <point key="canvasLocation" x="519" y="33"/>
+        </scene>
+        <!--Web Page Viewer View Controller-->
+        <scene sceneID="Vng-rE-7Vz">
+            <objects>
+                <viewController id="zF5-kk-VS9" customClass="WebPageViewerViewController" customModule="StyleFeed_RSSVC" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sn8-Wv-D91">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wM9-ys-e2a">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" red="0.83137254900000002" green="0.83137254900000002" blue="0.83137254900000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="1Rx-ra-7cN" firstAttribute="trailing" secondItem="wM9-ys-e2a" secondAttribute="trailing" id="K22-7O-SrF"/>
+                            <constraint firstItem="wM9-ys-e2a" firstAttribute="top" secondItem="1Rx-ra-7cN" secondAttribute="top" id="j2I-LK-rTU"/>
+                            <constraint firstItem="wM9-ys-e2a" firstAttribute="leading" secondItem="1Rx-ra-7cN" secondAttribute="leading" id="mdA-2g-4o5"/>
+                            <constraint firstItem="1Rx-ra-7cN" firstAttribute="bottom" secondItem="wM9-ys-e2a" secondAttribute="bottom" id="tQr-e8-7DL"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="1Rx-ra-7cN"/>
+                    </view>
+                    <connections>
+                        <outlet property="webKitView" destination="wM9-ys-e2a" id="304-xU-5v9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NUg-9n-mzS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1281" y="33"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="4nx-GW-9ks">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="okU-z7-cRd" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="dnJ-hf-WTL">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="yiI-La-3He"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ehd-WA-LOO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-284" y="33"/>
         </scene>
     </scenes>
     <resources>

@@ -24,6 +24,8 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
     let postImageNormalHeight: CGFloat = 226
     let feedImageNormalWidth: CGFloat = 36
     let authorLabelNormalHeight: CGFloat = 13
+    
+    var feedPostURL: URL!
 
     override func awakeFromNib() {
         super.awakeFromNib()

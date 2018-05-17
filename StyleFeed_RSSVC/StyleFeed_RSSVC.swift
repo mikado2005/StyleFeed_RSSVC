@@ -30,6 +30,24 @@ class StyleFeed_RSSVC: UIViewController {
             }
         }
     }
+    
+    override func shouldPerformSegue(withIdentifier identifier: String,
+                                     sender: Any?) -> Bool {
+        if let cell = sender as? RSSFeedPostWithImageTableCell,
+           cell.feedPostURL != nil {
+                return true
+        }
+        return false
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let cell = sender as? RSSFeedPostWithImageTableCell,
+           let url = cell.feedPostURL,
+           let destinationVC = segue.destination as? WebPageViewerViewController {
+                destinationVC.webPageToDisplay = url
+            print ("Prepare for segue")
+        }
+    }
 }
 
 extension StyleFeed_RSSVC: UITableViewDelegate, UITableViewDataSource {
@@ -74,6 +92,8 @@ extension StyleFeed_RSSVC: UITableViewDelegate, UITableViewDataSource {
         else {
             cell.authorLabelHeightConstraint.constant = 0
         }
+        
+        cell.feedPostURL = post.URL
         
         print ("\(feedName ?? "---") \(post.date.description) -- \(post.title ?? "---") -- \(post.imageURL?.description ?? "---")")
         
