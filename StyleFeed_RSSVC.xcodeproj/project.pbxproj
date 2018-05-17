@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		74C241D3D7B1A1036613BA3F /* Pods_StyleFeed_RSSVC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B011B04891A1AECC486AFFBE /* Pods_StyleFeed_RSSVC.framework */; };
 		F658171620AD414D004969A5 /* Geomanist-Ultra.otf in Resources */ = {isa = PBXBuildFile; fileRef = F658170D20AD414D004969A5 /* Geomanist-Ultra.otf */; };
 		F658171720AD414D004969A5 /* Geomanist-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = F658170E20AD414D004969A5 /* Geomanist-Light.otf */; };
 		F658171820AD414D004969A5 /* Geomanist-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = F658170F20AD414D004969A5 /* Geomanist-ExtraLight.otf */; };
@@ -17,6 +18,9 @@
 		F658171D20AD414D004969A5 /* Geomanist-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = F658171420AD414D004969A5 /* Geomanist-Medium.otf */; };
 		F658171E20AD414D004969A5 /* Geomanist-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = F658171520AD414D004969A5 /* Geomanist-Thin.otf */; };
 		F658172020AD482F004969A5 /* RSSFeedPostWithImageTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F658171F20AD482F004969A5 /* RSSFeedPostWithImageTableCell.swift */; };
+		F658172220AD4BC2004969A5 /* RSSFeeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = F658172120AD4BC2004969A5 /* RSSFeeds.swift */; };
+		F658172420AD4C2A004969A5 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F658172320AD4C2A004969A5 /* WebService.swift */; };
+		F658172620AD4C38004969A5 /* AppAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F658172520AD4C38004969A5 /* AppAttributes.swift */; };
 		F69CDE3320AD339F00474B4B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69CDE3220AD339F00474B4B /* AppDelegate.swift */; };
 		F69CDE3520AD339F00474B4B /* StyleFeed_RSSVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69CDE3420AD339F00474B4B /* StyleFeed_RSSVC.swift */; };
 		F69CDE3820AD339F00474B4B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F69CDE3620AD339F00474B4B /* Main.storyboard */; };
@@ -25,6 +29,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		99C87ECEFFF0293B172CBB1C /* Pods-StyleFeed_RSSVC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StyleFeed_RSSVC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-StyleFeed_RSSVC/Pods-StyleFeed_RSSVC.debug.xcconfig"; sourceTree = "<group>"; };
+		ACBE3EDC05165D89E41F5FC7 /* Pods-StyleFeed_RSSVC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StyleFeed_RSSVC.release.xcconfig"; path = "Pods/Target Support Files/Pods-StyleFeed_RSSVC/Pods-StyleFeed_RSSVC.release.xcconfig"; sourceTree = "<group>"; };
+		B011B04891A1AECC486AFFBE /* Pods_StyleFeed_RSSVC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StyleFeed_RSSVC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F658170D20AD414D004969A5 /* Geomanist-Ultra.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geomanist-Ultra.otf"; sourceTree = "<group>"; };
 		F658170E20AD414D004969A5 /* Geomanist-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geomanist-Light.otf"; sourceTree = "<group>"; };
 		F658170F20AD414D004969A5 /* Geomanist-ExtraLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geomanist-ExtraLight.otf"; sourceTree = "<group>"; };
@@ -35,6 +42,9 @@
 		F658171420AD414D004969A5 /* Geomanist-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geomanist-Medium.otf"; sourceTree = "<group>"; };
 		F658171520AD414D004969A5 /* Geomanist-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geomanist-Thin.otf"; sourceTree = "<group>"; };
 		F658171F20AD482F004969A5 /* RSSFeedPostWithImageTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSFeedPostWithImageTableCell.swift; sourceTree = "<group>"; };
+		F658172120AD4BC2004969A5 /* RSSFeeds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSSFeeds.swift; sourceTree = "<group>"; };
+		F658172320AD4C2A004969A5 /* WebService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
+		F658172520AD4C38004969A5 /* AppAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppAttributes.swift; sourceTree = "<group>"; };
 		F69CDE2F20AD339F00474B4B /* StyleFeed_RSSVC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StyleFeed_RSSVC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F69CDE3220AD339F00474B4B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F69CDE3420AD339F00474B4B /* StyleFeed_RSSVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleFeed_RSSVC.swift; sourceTree = "<group>"; };
@@ -49,12 +59,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74C241D3D7B1A1036613BA3F /* Pods_StyleFeed_RSSVC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2BAECBAE65A8871EAD7D0369 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				99C87ECEFFF0293B172CBB1C /* Pods-StyleFeed_RSSVC.debug.xcconfig */,
+				ACBE3EDC05165D89E41F5FC7 /* Pods-StyleFeed_RSSVC.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		743865F72942B242960EA740 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B011B04891A1AECC486AFFBE /* Pods_StyleFeed_RSSVC.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F658170C20AD414D004969A5 /* Geomanist Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -74,8 +102,10 @@
 		F69CDE2620AD339F00474B4B = {
 			isa = PBXGroup;
 			children = (
-				F69CDE3120AD339F00474B4B /* TableViewVariableHeight */,
+				F69CDE3120AD339F00474B4B /* StyleFeed_RSSVC */,
 				F69CDE3020AD339F00474B4B /* Products */,
+				2BAECBAE65A8871EAD7D0369 /* Pods */,
+				743865F72942B242960EA740 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -87,19 +117,22 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F69CDE3120AD339F00474B4B /* TableViewVariableHeight */ = {
+		F69CDE3120AD339F00474B4B /* StyleFeed_RSSVC */ = {
 			isa = PBXGroup;
 			children = (
+				F658172520AD4C38004969A5 /* AppAttributes.swift */,
 				F69CDE3220AD339F00474B4B /* AppDelegate.swift */,
 				F69CDE3920AD339F00474B4B /* Assets.xcassets */,
+				F658170C20AD414D004969A5 /* Geomanist Fonts */,
 				F69CDE3E20AD339F00474B4B /* Info.plist */,
 				F69CDE3B20AD339F00474B4B /* LaunchScreen.storyboard */,
 				F69CDE3620AD339F00474B4B /* Main.storyboard */,
-				F69CDE3420AD339F00474B4B /* StyleFeed_RSSVC.swift */,
 				F658171F20AD482F004969A5 /* RSSFeedPostWithImageTableCell.swift */,
-				F658170C20AD414D004969A5 /* Geomanist Fonts */,
+				F658172120AD4BC2004969A5 /* RSSFeeds.swift */,
+				F69CDE3420AD339F00474B4B /* StyleFeed_RSSVC.swift */,
+				F658172320AD4C2A004969A5 /* WebService.swift */,
 			);
-			path = TableViewVariableHeight;
+			path = StyleFeed_RSSVC;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -109,9 +142,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F69CDE4120AD339F00474B4B /* Build configuration list for PBXNativeTarget "StyleFeed_RSSVC" */;
 			buildPhases = (
+				E81FD96F2E2FA97CAD9E32FF /* [CP] Check Pods Manifest.lock */,
 				F69CDE2B20AD339F00474B4B /* Sources */,
 				F69CDE2C20AD339F00474B4B /* Frameworks */,
 				F69CDE2D20AD339F00474B4B /* Resources */,
+				7859433A40891A40D9CB69D3 /* [CP] Embed Pods Frameworks */,
+				3921945AA409B3F039C4E651 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -178,13 +214,76 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		3921945AA409B3F039C4E651 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-StyleFeed_RSSVC/Pods-StyleFeed_RSSVC-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7859433A40891A40D9CB69D3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-StyleFeed_RSSVC/Pods-StyleFeed_RSSVC-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/FeedKit/FeedKit.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FeedKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-StyleFeed_RSSVC/Pods-StyleFeed_RSSVC-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E81FD96F2E2FA97CAD9E32FF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-StyleFeed_RSSVC-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		F69CDE2B20AD339F00474B4B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F658172620AD4C38004969A5 /* AppAttributes.swift in Sources */,
+				F658172220AD4BC2004969A5 /* RSSFeeds.swift in Sources */,
 				F658172020AD482F004969A5 /* RSSFeedPostWithImageTableCell.swift in Sources */,
 				F69CDE3520AD339F00474B4B /* StyleFeed_RSSVC.swift in Sources */,
+				F658172420AD4C2A004969A5 /* WebService.swift in Sources */,
 				F69CDE3320AD339F00474B4B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -320,11 +419,12 @@
 		};
 		F69CDE4220AD339F00474B4B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 99C87ECEFFF0293B172CBB1C /* Pods-StyleFeed_RSSVC.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9DAT7A9Z28;
-				INFOPLIST_FILE = TableViewVariableHeight/Info.plist;
+				INFOPLIST_FILE = StyleFeed_RSSVC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.planetbeagle.StyleFeed-RSSVC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -335,11 +435,12 @@
 		};
 		F69CDE4320AD339F00474B4B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = ACBE3EDC05165D89E41F5FC7 /* Pods-StyleFeed_RSSVC.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9DAT7A9Z28;
-				INFOPLIST_FILE = TableViewVariableHeight/Info.plist;
+				INFOPLIST_FILE = StyleFeed_RSSVC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.planetbeagle.StyleFeed-RSSVC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
