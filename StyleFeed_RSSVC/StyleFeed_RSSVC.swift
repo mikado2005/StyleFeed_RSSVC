@@ -10,31 +10,48 @@ import UIKit
 
 class StyleFeed_RSSVC: UIViewController {
     @IBOutlet weak var feedPostsTableView: UITableView!
+    
     var rssFeeds = RSSFeeds()
     var aggregatedRSSFeed: [RSSFeedPostSummary]!
 
-    let data = ["This is the first label", "This is the somewhat longer second label. This is the somewhat longer second label", "This is the even somewhat rather longer third label which is genuinely longer, truly.  This is the even somewhat rather longer third label.  This is indeed the even somewhat rather longer third label."]
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         feedPostsTableView.rowHeight = UITableViewAutomaticDimension
-        feedPostsTableView.estimatedRowHeight = 50
+        feedPostsTableView.estimatedRowHeight = 400
+        
+        rssFeeds.updateFeedsFromRSS(viewForProgressHUD: view) {
+            (feedId) in
+            print ("There are now \(self.rssFeeds.feedsInfo.count) feeds.  Just loaded #\(feedId)")
+            self.aggregatedRSSFeed = self.rssFeeds.getAggregatedFeed()
+            DispatchQueue.main.async {
+                self.feedPostsTableView.reloadData()
+            }
+        }
     }
-
 }
 
 extension StyleFeed_RSSVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.count
+        return aggregatedRSSFeed?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TableCell",
-                                                 for: indexPath) as! RSSFeedPostWithImageTableCell
-        cell.feedNameLabel.text = data[indexPath.row]
-        cell.postTitleLabel.text = data[(indexPath.row + 1) % data.count]
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: "RSSFeedPostCellWithImage",
+            for: indexPath) as! RSSFeedPostWithImageTableCell
+        
+        let post = aggregatedRSSFeed[indexPath.row]
+        cell.feedNameLabel.text = rssFeeds.feedsInfo[post.feedId]?.name
+        cell.postTitleLabel.text = post.title
+        if let imageURL = rssFeeds.feedsInfo[post.feedId]?.logoURL {
+            cell.feedImageView.setImageWith(imageURL)
+        }
+        
+        if let imageURL = post.imageURL {
+            cell.postImageView.setImageWith(imageURL)
+        }
+        
         return cell
     }
-
 }
