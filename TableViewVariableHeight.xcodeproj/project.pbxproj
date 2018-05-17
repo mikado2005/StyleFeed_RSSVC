@@ -55,11 +55,11 @@
 			isa = PBXGroup;
 			children = (
 				F69CDE3220AD339F00474B4B /* AppDelegate.swift */,
-				F69CDE3420AD339F00474B4B /* ViewController.swift */,
-				F69CDE3620AD339F00474B4B /* Main.storyboard */,
 				F69CDE3920AD339F00474B4B /* Assets.xcassets */,
-				F69CDE3B20AD339F00474B4B /* LaunchScreen.storyboard */,
 				F69CDE3E20AD339F00474B4B /* Info.plist */,
+				F69CDE3B20AD339F00474B4B /* LaunchScreen.storyboard */,
+				F69CDE3620AD339F00474B4B /* Main.storyboard */,
+				F69CDE3420AD339F00474B4B /* ViewController.swift */,
 			);
 			path = TableViewVariableHeight;
 			sourceTree = "<group>";
