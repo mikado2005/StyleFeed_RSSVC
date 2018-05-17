@@ -15,6 +15,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print ("hi!")
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 50
+
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -24,14 +28,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableCell",
                                       for: indexPath) as! TableCell
-        cell.label.text = data[indexPath.row]
+        cell.label1.text = data[indexPath.row]
+        cell.label2.text = data[(indexPath.row + 1) % data.count]
         return cell
     }
 }
 
 class TableCell : UITableViewCell {
     
-    @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var label1: UILabel!
+    @IBOutlet weak var label2: UILabel!
     @IBOutlet weak var containerView: UIView!
     
     override func awakeFromNib() {
