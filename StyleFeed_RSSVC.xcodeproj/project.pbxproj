@@ -16,8 +16,9 @@
 		F658171C20AD414D004969A5 /* Geomanist-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = F658171320AD414D004969A5 /* Geomanist-Book.otf */; };
 		F658171D20AD414D004969A5 /* Geomanist-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = F658171420AD414D004969A5 /* Geomanist-Medium.otf */; };
 		F658171E20AD414D004969A5 /* Geomanist-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = F658171520AD414D004969A5 /* Geomanist-Thin.otf */; };
+		F658172020AD482F004969A5 /* RSSFeedPostWithImageTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F658171F20AD482F004969A5 /* RSSFeedPostWithImageTableCell.swift */; };
 		F69CDE3320AD339F00474B4B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69CDE3220AD339F00474B4B /* AppDelegate.swift */; };
-		F69CDE3520AD339F00474B4B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69CDE3420AD339F00474B4B /* ViewController.swift */; };
+		F69CDE3520AD339F00474B4B /* StyleFeed_RSSVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69CDE3420AD339F00474B4B /* StyleFeed_RSSVC.swift */; };
 		F69CDE3820AD339F00474B4B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F69CDE3620AD339F00474B4B /* Main.storyboard */; };
 		F69CDE3A20AD339F00474B4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F69CDE3920AD339F00474B4B /* Assets.xcassets */; };
 		F69CDE3D20AD339F00474B4B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F69CDE3B20AD339F00474B4B /* LaunchScreen.storyboard */; };
@@ -33,9 +34,10 @@
 		F658171320AD414D004969A5 /* Geomanist-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geomanist-Book.otf"; sourceTree = "<group>"; };
 		F658171420AD414D004969A5 /* Geomanist-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geomanist-Medium.otf"; sourceTree = "<group>"; };
 		F658171520AD414D004969A5 /* Geomanist-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geomanist-Thin.otf"; sourceTree = "<group>"; };
-		F69CDE2F20AD339F00474B4B /* TableViewVariableHeight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TableViewVariableHeight.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F658171F20AD482F004969A5 /* RSSFeedPostWithImageTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSFeedPostWithImageTableCell.swift; sourceTree = "<group>"; };
+		F69CDE2F20AD339F00474B4B /* StyleFeed_RSSVC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StyleFeed_RSSVC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F69CDE3220AD339F00474B4B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F69CDE3420AD339F00474B4B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F69CDE3420AD339F00474B4B /* StyleFeed_RSSVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleFeed_RSSVC.swift; sourceTree = "<group>"; };
 		F69CDE3720AD339F00474B4B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F69CDE3920AD339F00474B4B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F69CDE3C20AD339F00474B4B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -80,7 +82,7 @@
 		F69CDE3020AD339F00474B4B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F69CDE2F20AD339F00474B4B /* TableViewVariableHeight.app */,
+				F69CDE2F20AD339F00474B4B /* StyleFeed_RSSVC.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -93,7 +95,8 @@
 				F69CDE3E20AD339F00474B4B /* Info.plist */,
 				F69CDE3B20AD339F00474B4B /* LaunchScreen.storyboard */,
 				F69CDE3620AD339F00474B4B /* Main.storyboard */,
-				F69CDE3420AD339F00474B4B /* ViewController.swift */,
+				F69CDE3420AD339F00474B4B /* StyleFeed_RSSVC.swift */,
+				F658171F20AD482F004969A5 /* RSSFeedPostWithImageTableCell.swift */,
 				F658170C20AD414D004969A5 /* Geomanist Fonts */,
 			);
 			path = TableViewVariableHeight;
@@ -102,9 +105,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F69CDE2E20AD339F00474B4B /* TableViewVariableHeight */ = {
+		F69CDE2E20AD339F00474B4B /* StyleFeed_RSSVC */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F69CDE4120AD339F00474B4B /* Build configuration list for PBXNativeTarget "TableViewVariableHeight" */;
+			buildConfigurationList = F69CDE4120AD339F00474B4B /* Build configuration list for PBXNativeTarget "StyleFeed_RSSVC" */;
 			buildPhases = (
 				F69CDE2B20AD339F00474B4B /* Sources */,
 				F69CDE2C20AD339F00474B4B /* Frameworks */,
@@ -114,9 +117,9 @@
 			);
 			dependencies = (
 			);
-			name = TableViewVariableHeight;
+			name = StyleFeed_RSSVC;
 			productName = TableViewVariableHeight;
-			productReference = F69CDE2F20AD339F00474B4B /* TableViewVariableHeight.app */;
+			productReference = F69CDE2F20AD339F00474B4B /* StyleFeed_RSSVC.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -135,7 +138,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F69CDE2A20AD339F00474B4B /* Build configuration list for PBXProject "TableViewVariableHeight" */;
+			buildConfigurationList = F69CDE2A20AD339F00474B4B /* Build configuration list for PBXProject "StyleFeed_RSSVC" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -148,7 +151,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F69CDE2E20AD339F00474B4B /* TableViewVariableHeight */,
+				F69CDE2E20AD339F00474B4B /* StyleFeed_RSSVC */,
 			);
 		};
 /* End PBXProject section */
@@ -180,7 +183,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F69CDE3520AD339F00474B4B /* ViewController.swift in Sources */,
+				F658172020AD482F004969A5 /* RSSFeedPostWithImageTableCell.swift in Sources */,
+				F69CDE3520AD339F00474B4B /* StyleFeed_RSSVC.swift in Sources */,
 				F69CDE3320AD339F00474B4B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -322,7 +326,7 @@
 				DEVELOPMENT_TEAM = 9DAT7A9Z28;
 				INFOPLIST_FILE = TableViewVariableHeight/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.planetbeagle.TableViewVariableHeight;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.planetbeagle.StyleFeed-RSSVC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -337,7 +341,7 @@
 				DEVELOPMENT_TEAM = 9DAT7A9Z28;
 				INFOPLIST_FILE = TableViewVariableHeight/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.planetbeagle.TableViewVariableHeight;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.planetbeagle.StyleFeed-RSSVC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -347,7 +351,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F69CDE2A20AD339F00474B4B /* Build configuration list for PBXProject "TableViewVariableHeight" */ = {
+		F69CDE2A20AD339F00474B4B /* Build configuration list for PBXProject "StyleFeed_RSSVC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F69CDE3F20AD339F00474B4B /* Debug */,
@@ -356,7 +360,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F69CDE4120AD339F00474B4B /* Build configuration list for PBXNativeTarget "TableViewVariableHeight" */ = {
+		F69CDE4120AD339F00474B4B /* Build configuration list for PBXNativeTarget "StyleFeed_RSSVC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F69CDE4220AD339F00474B4B /* Debug */,
