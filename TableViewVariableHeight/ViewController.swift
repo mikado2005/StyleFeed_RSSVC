@@ -40,13 +40,38 @@ class TableCell : UITableViewCell {
     @IBOutlet weak var label2: UILabel!
     @IBOutlet weak var containerView: UIView!
     
+    @IBOutlet weak var imageView1: UIImageView!
+    
+    @IBOutlet weak var imageView2: UIImageView!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        containerView.layer.borderColor = UIColor.black.cgColor
-        containerView.layer.borderWidth = 2
-        containerView.layer.cornerRadius = 4
-        containerView.layer.shadowColor = UIColor.black.withAlphaComponent(0.3).cgColor
-        containerView.layer.shadowRadius = 3
+        
+        imageView1.layer.cornerRadius = imageView1.bounds.height / 2
+        imageView1.layer.borderWidth = 1.0
+        imageView1.layer.borderColor =
+            UIColor(red: 1.000, green: 0.408, blue: 0.345, alpha: 1.00).cgColor // TODO: CHANGE THIS TO DEFINED COLOR
+        imageView1.layer.masksToBounds = true
+
+        
+//        containerView.clipsToBounds = false
+//        containerView.layer.borderColor = UIColor.black.cgColor
+//        containerView.layer.borderWidth = 2
+//        containerView.layer.cornerRadius = 4
+//        containerView.layer.shadowColor = UIColor.black.withAlphaComponent(0.3).cgColor
+//        containerView.layer.shadowRadius = 3
+        
+        containerView.backgroundColor = UIColor.white
+        containerView.layer.borderWidth = 1.0
+        containerView.layer.borderColor = UIColor.white.cgColor
+        containerView.layer.cornerRadius = 5.0
+        containerView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        containerView.layer.masksToBounds = false
+        containerView.layer.shadowColor = UIColor.lightGray.cgColor
+        containerView.layer.shadowOpacity = 0.3
+        containerView.layer.shadowRadius = 3.0
+        
     }
 
 }
