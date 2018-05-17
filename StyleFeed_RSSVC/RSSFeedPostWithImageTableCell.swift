@@ -15,7 +15,16 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var feedImageView: UIImageView!
     @IBOutlet weak var postImageView: UIImageView!
-    
+    @IBOutlet weak var authorAndDateLabel: UILabel!
+    @IBOutlet weak var postImageHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var feedImageWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var authorLabelHeightConstraint: NSLayoutConstraint!
+
+    // Sync these settings with height and widths constraints on Storyboard
+    let postImageNormalHeight: CGFloat = 226
+    let feedImageNormalWidth: CGFloat = 36
+    let authorLabelNormalHeight: CGFloat = 13
+
     override func awakeFromNib() {
         super.awakeFromNib()
         

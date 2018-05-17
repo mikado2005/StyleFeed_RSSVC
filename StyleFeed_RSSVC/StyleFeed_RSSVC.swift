@@ -9,6 +9,7 @@
 import UIKit
 
 class StyleFeed_RSSVC: UIViewController {
+    
     @IBOutlet weak var feedPostsTableView: UITableView!
     
     var rssFeeds = RSSFeeds()
@@ -16,6 +17,7 @@ class StyleFeed_RSSVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         feedPostsTableView.rowHeight = UITableViewAutomaticDimension
         feedPostsTableView.estimatedRowHeight = 400
         
@@ -41,16 +43,39 @@ extension StyleFeed_RSSVC: UITableViewDelegate, UITableViewDataSource {
             withIdentifier: "RSSFeedPostCellWithImage",
             for: indexPath) as! RSSFeedPostWithImageTableCell
         
+        cell.postImageView.image = nil
+        cell.feedImageView.image = nil
+        cell.postImageHeightConstraint.constant = cell.postImageNormalHeight
+        cell.feedImageWidthConstraint.constant = cell.feedImageNormalWidth
+        cell.authorLabelHeightConstraint.constant = cell.authorLabelNormalHeight
+        
         let post = aggregatedRSSFeed[indexPath.row]
-        cell.feedNameLabel.text = rssFeeds.feedsInfo[post.feedId]?.name
+        let feedName = rssFeeds.feedsInfo[post.feedId]?.name
+        cell.feedNameLabel.text = feedName
         cell.postTitleLabel.text = post.title
         if let imageURL = rssFeeds.feedsInfo[post.feedId]?.logoURL {
             cell.feedImageView.setImageWith(imageURL)
+        }
+        else {
+            cell.feedImageWidthConstraint.constant = 0
         }
         
         if let imageURL = post.imageURL {
             cell.postImageView.setImageWith(imageURL)
         }
+        else {
+            cell.postImageView.image = nil
+            cell.postImageHeightConstraint.constant = 0
+        }
+        
+        if let author = post.author {
+            cell.authorAndDateLabel.text = author
+        }
+        else {
+            cell.authorLabelHeightConstraint.constant = 0
+        }
+        
+        print ("\(feedName ?? "---") \(post.date.description) -- \(post.title ?? "---") -- \(post.imageURL?.description ?? "---")")
         
         return cell
     }

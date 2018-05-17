@@ -32,7 +32,8 @@ class RSSFeedInfo {
 
 class RSSFeedPost {
     var feedId: Int
-    var rssFeedItem: RSSFeedItem
+    var rssFeedItem: RSSFeedItem?
+    var atomFeedEntry: AtomFeedEntry?
     var title: String? = nil
     var URLString: String? = nil
     var URL: URL? = nil
@@ -43,6 +44,11 @@ class RSSFeedPost {
     init (feedId:Int, feedItem: RSSFeedItem) {
         self.feedId = feedId
         self.rssFeedItem = feedItem
+    }
+
+    init (feedId:Int, feedItem: AtomFeedEntry) {
+        self.feedId = feedId
+        self.atomFeedEntry = feedItem
     }
 }
 
@@ -96,20 +102,62 @@ class RSSFeeds {
         
         let newPost = RSSFeedPost(feedId: feedId, feedItem: rssItem)
         newPost.title = postTitle
-        newPost.author = rssItem.author
+        newPost.author = authorFromRSSFeedItem(rssItem)
         newPost.date = postDate
         newPost.URLString = postURLString
         if let postURL = URL(string: postURLString) {
             newPost.URL = postURL
             newPost.imageURL = imageURLFromRSSFeedItem(rssItem)
         }
+        if newPost.imageURL == nil {
+            print ("No picture for post \(newPost.title!)")
+        }
         feedPosts[feedId]?.append(newPost)
     }
     
+    func addAnAtomFeedPost(feedId: Int, atomEntry: AtomFeedEntry) {
+        guard
+            !atomFeedEntryExists(atomEntry, feedId: feedId),
+            let postTitle = atomEntry.title,
+            let links = atomEntry.links,
+            links.count > 0,
+            let postURLString = links[0].attributes?.href,
+            let postDate = atomEntry.published
+            else { return }
+        let newPost = RSSFeedPost(feedId: feedId, feedItem: atomEntry)
+        newPost.title = postTitle
+        if let authors = atomEntry.authors, authors.count > 0 {
+            newPost.author = authors[0].name
+        }
+        newPost.date = postDate
+        newPost.URLString = postURLString
+        newPost.URLString = postURLString
+        if let postURL = URL(string: postURLString) {
+            newPost.URL = postURL
+            newPost.imageURL = imageURLFromAtomFeedEntry(atomEntry)
+        }
+        feedPosts[feedId]?.append(newPost)
+    }
+
+    func authorFromRSSFeedItem(_ item: RSSFeedItem) -> String? {
+        if let author = item.author {
+            return author
+        }
+        if let author = item.dublinCore?.dcCreator {
+            return author
+        }
+        return nil
+    }
+        
     func imageURLFromRSSFeedItem(_ item: RSSFeedItem) -> URL? {
         if  let enclosure = item.enclosure,
             let mediaType = enclosure.attributes?.type,
             mediaTypeIsAnImage(mediaType),
+            let postImageURLString = enclosure.attributes?.url,
+            let postImageURL = URL(string: postImageURLString) {
+            return postImageURL
+        }
+        else if  let enclosure = item.enclosure,
             let postImageURLString = enclosure.attributes?.url,
             let postImageURL = URL(string: postImageURLString) {
             return postImageURL
@@ -126,8 +174,10 @@ class RSSFeeds {
         }
         return nil
     }
-    
-    func addAnAtomFeedPost(feedId: Int, atomEntry: AtomFeedEntry) {
+
+    // TODO: How to pull image from media tag?
+    func imageURLFromAtomFeedEntry(_ item: AtomFeedEntry) -> URL? {
+        return nil
     }
     
     func RSSFeedItemExists(_ item: RSSFeedItem, feedId: Int) -> Bool {
@@ -140,6 +190,18 @@ class RSSFeeds {
             }
         }
         return foundRSSItem
+    }
+
+    func atomFeedEntryExists(_ entry: AtomFeedEntry, feedId: Int) -> Bool {
+        guard let feedPostsToSearch = feedPosts[feedId] else { return false }
+        var foundEntry = false
+        for post in feedPostsToSearch {
+            if post.atomFeedEntry == entry {
+                foundEntry = true
+                break
+            }
+        }
+        return foundEntry
     }
     
     func mediaTypeIsAnImage(_ type: String) -> Bool {
