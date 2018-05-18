@@ -109,9 +109,6 @@ class RSSFeeds {
             newPost.URL = postURL
             newPost.imageURL = imageURLFromRSSFeedItem(rssItem)
         }
-        if newPost.imageURL == nil {
-            print ("No picture for post \(newPost.title!)")
-        }
         feedPosts[feedId]?.append(newPost)
     }
     

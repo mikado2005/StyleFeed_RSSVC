@@ -27,6 +27,7 @@
 		F69CDE3A20AD339F00474B4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F69CDE3920AD339F00474B4B /* Assets.xcassets */; };
 		F69CDE3D20AD339F00474B4B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F69CDE3B20AD339F00474B4B /* LaunchScreen.storyboard */; };
 		F6C3B6E120ADF7570006441B /* WebPageViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C3B6E020ADF7570006441B /* WebPageViewerViewController.swift */; };
+		F6C3B6E320AE07150006441B /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C3B6E220AE07150006441B /* Utils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		F69CDE3C20AD339F00474B4B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F69CDE3E20AD339F00474B4B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F6C3B6E020ADF7570006441B /* WebPageViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebPageViewerViewController.swift; sourceTree = "<group>"; };
+		F6C3B6E220AE07150006441B /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +136,7 @@
 				F69CDE3420AD339F00474B4B /* StyleFeed_RSSVC.swift */,
 				F658172320AD4C2A004969A5 /* WebService.swift */,
 				F6C3B6E020ADF7570006441B /* WebPageViewerViewController.swift */,
+				F6C3B6E220AE07150006441B /* Utils.swift */,
 			);
 			path = StyleFeed_RSSVC;
 			sourceTree = "<group>";
@@ -289,6 +292,7 @@
 				F658172420AD4C2A004969A5 /* WebService.swift in Sources */,
 				F6C3B6E120ADF7570006441B /* WebPageViewerViewController.swift in Sources */,
 				F69CDE3320AD339F00474B4B /* AppDelegate.swift in Sources */,
+				F6C3B6E320AE07150006441B /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
