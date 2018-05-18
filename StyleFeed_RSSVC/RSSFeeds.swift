@@ -71,165 +71,40 @@ class RSSFeedPostSummary {
 }
 
 class RSSFeeds {
-    var feedsInfo = [Int : RSSFeedInfo]()
-    var feedPosts = [Int : [RSSFeedPost]]()
     
-    func addOrUpdateAFeed(_ newFeed: RSSFeedInfo) {
-        // If we already have this feed, update its info
-        if let feedToUpdate = feedsInfo[newFeed.id] {
-            print ("Updating Feed #\(feedToUpdate.id)")
-            feedToUpdate.logoURL = newFeed.logoURL
-            feedToUpdate.name = newFeed.name
-            feedToUpdate.type = newFeed.type
-            feedToUpdate.URL = newFeed.URL
-        }
-        else { // This is a new feed
-            feedsInfo[newFeed.id] = newFeed
-            feedPosts[newFeed.id] = [RSSFeedPost]()
-            print ("Adding Feed #\(newFeed.id)")
-        }
-    }
+    // Our current feed, containing all posts from all feed, sorted by date/time
+    public var aggregatedFeed = [RSSFeedPostSummary]()
     
-    func addAFeedPost(feedId: Int, rssItem: RSSFeedItem) {
-        // See if this item already exists in the feed.  If not, add it if it has
-        // all the elements we need for a posting
-        guard
-            !RSSFeedItemExists(rssItem, feedId: feedId),
-            let postTitle = rssItem.title,
-            let postURLString = rssItem.link,
-            let postDate = rssItem.pubDate
-            else { return }
-        
-        let newPost = RSSFeedPost(feedId: feedId, feedItem: rssItem)
-        newPost.title = postTitle
-        newPost.author = authorFromRSSFeedItem(rssItem)
-        newPost.date = postDate
-        newPost.URLString = postURLString
-        if let postURL = URL(string: postURLString) {
-            newPost.URL = postURL
-            newPost.imageURL = imageURLFromRSSFeedItem(rssItem)
-        }
-        feedPosts[feedId]?.append(newPost)
-    }
+    // A dictionary relating feed ids to info about each RSS feed
+    public var feedsInfo = [Int : RSSFeedInfo]()
     
-    func addAnAtomFeedPost(feedId: Int, atomEntry: AtomFeedEntry) {
-        guard
-            !atomFeedEntryExists(atomEntry, feedId: feedId),
-            let postTitle = atomEntry.title,
-            let links = atomEntry.links,
-            links.count > 0,
-            let postURLString = links[0].attributes?.href,
-            let postDate = atomEntry.published
-            else { return }
-        let newPost = RSSFeedPost(feedId: feedId, feedItem: atomEntry)
-        newPost.title = postTitle
-        if let authors = atomEntry.authors, authors.count > 0 {
-            newPost.author = authors[0].name
-        }
-        newPost.date = postDate
-        newPost.URLString = postURLString
-        newPost.URLString = postURLString
-        if let postURL = URL(string: postURLString) {
-            newPost.URL = postURL
-            newPost.imageURL = imageURLFromAtomFeedEntry(atomEntry)
-        }
-        feedPosts[feedId]?.append(newPost)
-    }
-
-    func authorFromRSSFeedItem(_ item: RSSFeedItem) -> String? {
-        if let author = item.author {
-            return author
-        }
-        if let author = item.dublinCore?.dcCreator {
-            return author
-        }
-        return nil
-    }
-        
-    func imageURLFromRSSFeedItem(_ item: RSSFeedItem) -> URL? {
-        if  let enclosure = item.enclosure,
-            let mediaType = enclosure.attributes?.type,
-            mediaTypeIsAnImage(mediaType),
-            let postImageURLString = enclosure.attributes?.url,
-            let postImageURL = URL(string: postImageURLString) {
-            return postImageURL
-        }
-        else if  let enclosure = item.enclosure,
-            let postImageURLString = enclosure.attributes?.url,
-            let postImageURL = URL(string: postImageURLString) {
-            return postImageURL
-        }
-        else if let media = item.media?.mediaThumbnails?[0],
-            let postImageURLString = media.attributes?.url,
-            let postImageURL = URL(string: postImageURLString) {
-            return postImageURL
-        }
-        else if let media = item.media?.mediaContents?[0],
-            let postImageURLString = media.attributes?.url,
-            let postImageURL = URL(string: postImageURLString) {
-            return postImageURL
-        }
-        return nil
-    }
-
-    // TODO: How to pull image from media tag?
-    func imageURLFromAtomFeedEntry(_ item: AtomFeedEntry) -> URL? {
-        return nil
-    }
+    // A dictionary relating feed ids to the postings we've pulled from those feeds
+    private var feedPosts = [Int : [RSSFeedPost]]()
     
-    func RSSFeedItemExists(_ item: RSSFeedItem, feedId: Int) -> Bool {
-        guard let feedPostsToSearch = feedPosts[feedId] else { return false }
-        var foundRSSItem = false
-        for post in feedPostsToSearch {
-            if post.rssFeedItem == item {
-                foundRSSItem = true
-                break
-            }
-        }
-        return foundRSSItem
-    }
-
-    func atomFeedEntryExists(_ entry: AtomFeedEntry, feedId: Int) -> Bool {
-        guard let feedPostsToSearch = feedPosts[feedId] else { return false }
-        var foundEntry = false
-        for post in feedPostsToSearch {
-            if post.atomFeedEntry == entry {
-                foundEntry = true
-                break
-            }
-        }
-        return foundEntry
-    }
+    // A dispatch queue to fetch feeds on background thread(s)
+    let feedReadQueue = DispatchQueue(label: "com.couturelane.feedReadQueue", qos: DispatchQoS.userInteractive)
     
-    func mediaTypeIsAnImage(_ type: String) -> Bool {
-        let allowableImageTypes = ["image/jpg",
-                                   "image/jpeg",
-                                   "image/png",
-                                   "image/gif"
-        ]
-        return !(allowableImageTypes.index(of: type) == nil)
-    }
+    // MARK: Public interface
     
-    func getAggregatedFeed() -> [RSSFeedPostSummary] {
-        var aggregatedFeed = [RSSFeedPostSummary]()
-        for feedInfo in self.feedsInfo.values {
-            let feedId = feedInfo.id
-            let feed = self.feedPosts[feedInfo.id]!
-            _ = feed.map { aggregatedFeed.append(
-                RSSFeedPostSummary(fromRSSFeedPost: $0,
-                                   feedId: feedId)) }
-        }
-        return aggregatedFeed.sorted(by: { $0.date > $1.date })
-    }
-    
-    func updateFeedsFromRSS (viewForProgressHUD view: UIView?,
-                             afterEachFeedIsRead callback: FeedLoadCompletion?) {
+    public func updateFeedsFromRSS (viewForProgressHUD view: UIView?,
+                                    afterEachFeedIsRead callback: FeedLoadCompletion?) {
         getRSSFeedsInfo(viewForProgressHUD: view) {
-            self.readAllFeeds(afterEachFeedIsRead: callback)
+            var bti : UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+            bti = UIApplication.shared.beginBackgroundTask {
+                UIApplication.shared.endBackgroundTask(bti)
+            }
+            guard bti != UIBackgroundTaskInvalid else { return }
+            self.feedReadQueue.async {
+                self.readAllFeeds(afterEachFeedIsRead: callback)
+            }
         }
     }
     
-    func getRSSFeedsInfo(viewForProgressHUD view: UIView?, completion: @escaping () -> Void) {
+    // MARK: Internal functions
+    
+    // Read the list of current active feeds from our backend API
+    private func getRSSFeedsInfo(viewForProgressHUD view: UIView?,
+                                 completion: @escaping () -> Void) {
         WebService.shared.call("\(AppAttributes.CoutureLaneURL)/webservices/get_rss_feeds.php",
             method: .get,
             parameters: [:],
@@ -240,12 +115,14 @@ class RSSFeeds {
                 let json = JSON(result)
                 if let feeds = json["feeds"].array {
                     for feed in feeds {
+                        // Check each feed for validity
                         guard feed["is_active"].intValue == 1,
                             let feedId = feed["id"].int,
                             let feedName = feed["name"].string,
                             let feedType = feed["feed_type"].string,
                             let feedURLString = feed["url"].string,
                             let feedURL = URL(string: feedURLString) else { continue }
+                        // Add/update this feed in our master list of feeds
                         self.addOrUpdateAFeed(
                             RSSFeedInfo(id: feedId,
                                         name: feedName,
@@ -261,39 +138,236 @@ class RSSFeeds {
         })
     }
     
-    typealias FeedLoadCompletion = (Int) -> Void
+    private func addOrUpdateAFeed(_ newFeed: RSSFeedInfo) {
+        // If we already have this feed, update its info
+        if let feedToUpdate = feedsInfo[newFeed.id] {
+            NSLog ("Updating Feed #\(feedToUpdate.id)")
+            feedToUpdate.logoURL = newFeed.logoURL
+            feedToUpdate.name = newFeed.name
+            feedToUpdate.type = newFeed.type
+            feedToUpdate.URL = newFeed.URL
+        }
+        else { // This is a new feed
+            feedsInfo[newFeed.id] = newFeed
+            feedPosts[newFeed.id] = [RSSFeedPost]()
+            NSLog("Adding Feed #\(newFeed.id)")
+        }
+    }
     
-    func readAllFeeds(afterEachFeedIsRead callback: FeedLoadCompletion?) {
+    // Update all of the posts in all feeds
+    private func readAllFeeds(afterEachFeedIsRead callback: FeedLoadCompletion?) {
         for feed in feedsInfo.values {
-            feed.isUpdatingNow = true
-            let feedId = feed.id
-            let parser = FeedParser(URL: feed.URL)
-            parser?.parseAsync(queue: DispatchQueue.global(qos: .userInitiated)) {
-                (result) in
-                feed.isUpdatingNow = false
-                guard result.isSuccess else {
-                    print ("RSS feed query failed for feed \(feed.name) \(feed.URL.absoluteString)")
-                    return
+            guard !feed.isUpdatingNow else { continue }
+            NSLog ("readAllFeeds: Reading feed #\(feed.id)")
+            readOneFeed(feedId: feed.id) {
+                (newFeedPosts) in
+                // Add our new feed post array to the dictionary of those, update our
+                // aggregated feed, and alert our caller
+                self.feedPosts[feed.id] = newFeedPosts
+                self.aggregatedFeed = self.makeAggregatedFeed()
+                NSLog ("readAllFeeds: Finished feed #\(feed.id)")
+                DispatchQueue.main.async { // Use main thread to get back into UI code
+                    callback?(feed.id)
                 }
-                
-                if feed.type == "rss" {
-                    if let feed = result.rssFeed, let feedItems = feed.items {
-                        for item in feedItems {
-                            self.addAFeedPost(feedId: feedId, rssItem: item)
-                        }
-                    }
-                }
-                else if feed.type == "atom" {
-                    if let feed = result.atomFeed, let feedEntries = feed.entries {
-                        for entry in feedEntries {
-                            self.addAnAtomFeedPost(feedId: feedId, atomEntry: entry)
-                        }
-                    }
-                }
-                feed.lastRefreshedDate = Date()
-                callback?(feed.id)
             }
         }
+    }
+    
+    // Call out to a single RSS feed's URL, grab the posts, and process them.  Return the
+    // new feed in the callback function.
+    func readOneFeed(feedId: Int, callback: @escaping ([RSSFeedPost]?) -> Void) {
+        
+        // See if we're already reading this feed
+        guard let feedInfo = feedsInfo[feedId],
+              !feedInfo.isUpdatingNow else { return }
+        
+        // Set the flag to tell us we're pulling this feed
+        feedInfo.isUpdatingNow = true
+
+        // Start a new list of posts for this feed
+        var feedPosts = [RSSFeedPost]()
+        
+        // Fetch the feed posts.  These fetches are handled on concurrent dispatch queues,
+        // and hence may complete in any order.
+        let parser = FeedParser(URL: feedInfo.URL)
+        parser?.parseAsync(queue: DispatchQueue.global(qos: .userInitiated)) {
+            (result) in
+            
+            // Bail out if we didn't receive a valid feed
+            guard result.isSuccess else {
+                print ("RSS feed query failed for feed \(feedInfo.name) \(feedInfo.URL.absoluteString)")
+                feedInfo.isUpdatingNow = false
+                return
+            }
+            
+            // Process the feed items and add them to the feed posts array
+            if feedInfo.type == "rss" {
+                if let feed = result.rssFeed, let feedItems = feed.items {
+                    for item in feedItems {
+                        if let newPost = self.createRSSFeedPost(feedId: feedId,
+                                                                rssItem: item) {
+                            feedPosts.append(newPost)
+                        }
+                    }
+                }
+            }
+            else if feedInfo.type == "atom" {
+                if let feed = result.atomFeed, let feedEntries = feed.entries {
+                    for entry in feedEntries {
+                        if let newPost = self.createAtomFeedPost(feedId: feedId,
+                                                                 atomEntry: entry) {
+                            feedPosts.append(newPost)
+                        }
+                    }
+                }
+            }
+            
+            // Update the feed's info and callback to our caller
+            feedInfo.lastRefreshedDate = Date()
+            feedInfo.isUpdatingNow = false
+            callback(feedPosts)
+        }
+    }
+
+    // Make a new RSS post, given an RSSFeedItem from the feed parser, and return it
+    private func createRSSFeedPost(feedId: Int, rssItem: RSSFeedItem) -> RSSFeedPost? {
+        
+        func authorFromRSSFeedItem(_ item: RSSFeedItem) -> String? {
+            if let author = item.author {
+                return author
+            }
+            if let author = item.dublinCore?.dcCreator {
+                return author
+            }
+            return nil
+        }
+        
+        func imageURLFromRSSFeedItem(_ item: RSSFeedItem) -> URL? {
+            if  let enclosure = item.enclosure,
+                let mediaType = enclosure.attributes?.type,
+                mediaTypeIsAnImage(mediaType),
+                let postImageURLString = enclosure.attributes?.url,
+                let postImageURL = URL(string: postImageURLString) {
+                return postImageURL
+            }
+            else if  let enclosure = item.enclosure,
+                let postImageURLString = enclosure.attributes?.url,
+                let postImageURL = URL(string: postImageURLString) {
+                return postImageURL
+            }
+            else if let media = item.media?.mediaThumbnails?[0],
+                let postImageURLString = media.attributes?.url,
+                let postImageURL = URL(string: postImageURLString) {
+                return postImageURL
+            }
+            else if let media = item.media?.mediaContents?[0],
+                let postImageURLString = media.attributes?.url,
+                let postImageURL = URL(string: postImageURLString) {
+                return postImageURL
+            }
+            return nil
+        }
+        
+        // See if this item has all the elements we need for a posting
+        guard
+            let postTitle = rssItem.title,
+            let postURLString = rssItem.link,
+            let postDate = rssItem.pubDate
+            else { return nil }
+        
+        let newPost = RSSFeedPost(feedId: feedId, feedItem: rssItem)
+        newPost.title = postTitle
+        newPost.author = authorFromRSSFeedItem(rssItem)
+        newPost.date = postDate
+        newPost.URLString = postURLString
+        if let postURL = URL(string: postURLString) {
+            newPost.URL = postURL
+            newPost.imageURL = imageURLFromRSSFeedItem(rssItem)
+        }
+        return newPost
+    }
+
+    // Make a new Atom-style post, given an AtomFeedEntry from the feed parser, and return it
+    private func createAtomFeedPost(feedId: Int, atomEntry: AtomFeedEntry) -> RSSFeedPost? {
+        
+        // TODO: How to pull image from media tag?
+        func imageURLFromAtomFeedEntry(_ item: AtomFeedEntry) -> URL? {
+            return nil
+        }
+
+        // See if this item has all the elements we need for a posting
+        guard
+            let postTitle = atomEntry.title,
+            let links = atomEntry.links,
+            links.count > 0,
+            let postURLString = links[0].attributes?.href,
+            let postDate = atomEntry.published
+            else { return nil}
+        
+        let newPost = RSSFeedPost(feedId: feedId, feedItem: atomEntry)
+        newPost.title = postTitle
+        if let authors = atomEntry.authors, authors.count > 0 {
+            newPost.author = authors[0].name
+        }
+        newPost.date = postDate
+        newPost.URLString = postURLString
+        newPost.URLString = postURLString
+        if let postURL = URL(string: postURLString) {
+            newPost.URL = postURL
+            newPost.imageURL = imageURLFromAtomFeedEntry(atomEntry)
+        }
+        return newPost
+    }
+
+    // Search a feed to find an existing post based on its RSSFeedItem
+    private func RSSFeedItemExists(_ item: RSSFeedItem, feedId: Int) -> Bool {
+        guard let feedPostsToSearch = feedPosts[feedId] else { return false }
+        var foundRSSItem = false
+        for post in feedPostsToSearch {
+            if post.rssFeedItem == item {
+                foundRSSItem = true
+                break
+            }
+        }
+        return foundRSSItem
+    }
+
+    // Search a feed to find an existing post based on its AtomFeedEntry
+    private func atomFeedEntryExists(_ entry: AtomFeedEntry, feedId: Int) -> Bool {
+        guard let feedPostsToSearch = feedPosts[feedId] else { return false }
+        var foundEntry = false
+        for post in feedPostsToSearch {
+            if post.atomFeedEntry == entry {
+                foundEntry = true
+                break
+            }
+        }
+        return foundEntry
+    }
+    
+    // Simple way to guess whether an image can be shown in our UI
+    private func mediaTypeIsAnImage(_ type: String) -> Bool {
+        let allowableImageTypes = ["image/jpg",
+                                   "image/jpeg",
+                                   "image/png",
+                                   "image/gif"
+        ]
+        return !(allowableImageTypes.index(of: type) == nil)
+    }
+    
+    typealias FeedLoadCompletion = (Int) -> Void
+    
+    // Grab all of the posts current in all feeds and sort them by date/time
+    private func makeAggregatedFeed() -> [RSSFeedPostSummary] {
+        var aggregatedFeed = [RSSFeedPostSummary]()
+        for feedInfo in self.feedsInfo.values {
+            let feedId = feedInfo.id
+            let feed = self.feedPosts[feedInfo.id]!
+            _ = feed.map { aggregatedFeed.append(
+                RSSFeedPostSummary(fromRSSFeedPost: $0,
+                                   feedId: feedId)) }
+        }
+        return aggregatedFeed.sorted(by: { $0.date > $1.date })
     }
     
 }

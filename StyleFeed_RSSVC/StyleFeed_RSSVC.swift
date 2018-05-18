@@ -23,8 +23,8 @@ class StyleFeed_RSSVC: UIViewController {
         
         rssFeeds.updateFeedsFromRSS(viewForProgressHUD: view) {
             (feedId) in
-            print ("There are now \(self.rssFeeds.feedsInfo.count) feeds.  Just loaded #\(feedId)")
-            self.aggregatedRSSFeed = self.rssFeeds.getAggregatedFeed()
+            self.aggregatedRSSFeed = self.rssFeeds.aggregatedFeed
+            print ("Loaded feed #\(feedId)")
             DispatchQueue.main.async {
                 self.feedPostsTableView.reloadData()
             }
