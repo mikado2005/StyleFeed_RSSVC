@@ -26,6 +26,7 @@
 		F69CDE3820AD339F00474B4B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F69CDE3620AD339F00474B4B /* Main.storyboard */; };
 		F69CDE3A20AD339F00474B4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F69CDE3920AD339F00474B4B /* Assets.xcassets */; };
 		F69CDE3D20AD339F00474B4B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F69CDE3B20AD339F00474B4B /* LaunchScreen.storyboard */; };
+		F6A3F24720B099BF008D75C3 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A3F24620B099BF008D75C3 /* UIImageView.swift */; };
 		F6C3B6E120ADF7570006441B /* WebPageViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C3B6E020ADF7570006441B /* WebPageViewerViewController.swift */; };
 		F6C3B6E320AE07150006441B /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C3B6E220AE07150006441B /* Utils.swift */; };
 /* End PBXBuildFile section */
@@ -54,6 +55,7 @@
 		F69CDE3920AD339F00474B4B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F69CDE3C20AD339F00474B4B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F69CDE3E20AD339F00474B4B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F6A3F24620B099BF008D75C3 /* UIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		F6C3B6E020ADF7570006441B /* WebPageViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebPageViewerViewController.swift; sourceTree = "<group>"; };
 		F6C3B6E220AE07150006441B /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		F6C3B70820AF62F60006441B /* StyleFeed_RSSVC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StyleFeed_RSSVC-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				F69CDE3B20AD339F00474B4B /* LaunchScreen.storyboard */,
 				F69CDE3620AD339F00474B4B /* Main.storyboard */,
 				F658171F20AD482F004969A5 /* RSSFeedPostWithImageTableCell.swift */,
+				F6A3F24620B099BF008D75C3 /* UIImageView.swift */,
 				F658172120AD4BC2004969A5 /* RSSFeeds.swift */,
 				F69CDE3420AD339F00474B4B /* StyleFeed_RSSVC.swift */,
 				F658172320AD4C2A004969A5 /* WebService.swift */,
@@ -248,6 +251,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-StyleFeed_RSSVC/Pods-StyleFeed_RSSVC-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/FeedKit/FeedKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
@@ -255,6 +259,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FeedKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
@@ -294,6 +299,7 @@
 				F69CDE3520AD339F00474B4B /* StyleFeed_RSSVC.swift in Sources */,
 				F658172420AD4C2A004969A5 /* WebService.swift in Sources */,
 				F6C3B6E120ADF7570006441B /* WebPageViewerViewController.swift in Sources */,
+				F6A3F24720B099BF008D75C3 /* UIImageView.swift in Sources */,
 				F69CDE3320AD339F00474B4B /* AppDelegate.swift in Sources */,
 				F6C3B6E320AE07150006441B /* Utils.swift in Sources */,
 			);

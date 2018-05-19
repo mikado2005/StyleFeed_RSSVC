@@ -14,6 +14,7 @@ class StyleFeed_RSSVC: UIViewController {
     
     var rssFeeds = RSSFeeds()
     var aggregatedRSSFeed: [RSSFeedPostSummary]!
+    var DEBUG = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,7 +107,23 @@ extension StyleFeed_RSSVC: UITableViewDelegate, UITableViewDataSource {
         }
         
         if let imageURL = post.imageURL {
-            cell.postImageView.setImageWith(imageURL)
+            cell.postImageView.download(url: imageURL, indicator: false, placeholder: nil)
+//            cell.postImageView.setImageWith(imageURL)
+//            var urlRequestForImage = URLRequest(url: imageURL)
+//            //[request addValue:@"image/*" forHTTPHeaderField:@"Accept"]
+//            urlRequestForImage.addValue("image/*", forHTTPHeaderField: "Accept")
+            
+//            cell.postImageView.setImageWith(urlRequestForImage,
+//                                            placeholderImage: nil,
+//                                            success: nil,
+//                                            failure:nil)
+//                    success: { (urlRequest, httpURLResponse, image) in
+//                        if self.DEBUG {
+//                            print ("setImageWithURLRequest success \(imageURL) \(image.size)") }
+//                    },
+//                    failure: {(urlRequest, httpURLResponse, error) in
+//                        print ("setImageWithURLRequest FAILURE with Error: \(error)")
+//            })
         }
         else {
             cell.postImageView.image = nil

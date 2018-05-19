@@ -153,6 +153,7 @@ class RSSFeeds {
                 }
         },
             failure: {(Error) in
+                //TODO:
                 print ("Some appropriate error log here")
         })
     }
@@ -168,7 +169,7 @@ class RSSFeeds {
         }
         else { // This is a new feed
             // TODO: REMOVE THIS DEBUG IF
-            if numberOfFeeds < 30 {
+            if numberOfFeeds < 4 {
                 numberOfFeeds += 1
                 feedsInfo[newFeed.id] = newFeed
                 feedPosts[newFeed.id] = [RSSFeedPost]()
