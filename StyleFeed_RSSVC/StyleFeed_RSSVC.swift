@@ -22,11 +22,24 @@ class StyleFeed_RSSVC: UIViewController {
         feedPostsTableView.estimatedRowHeight = 400
         
         rssFeeds.updateFeedsFromRSS(viewForProgressHUD: view) {
-            (feedId) in
-            self.aggregatedRSSFeed = self.rssFeeds.aggregatedFeed
-            print ("Loaded feed #\(feedId)")
+            (feedId, aggregatedFeed, indicesOfDeletedPosts, indicesOfNewPosts) in
+            
+            // Convert the post indices into IndexPath objects for UITableView
+            let indexPathsOfDeletedRows = indicesOfDeletedPosts.map {
+                                            IndexPath(row: $0, section: 0)}
+            let indexPathsOfInsertedRows = indicesOfNewPosts.map {
+                                            IndexPath(row: $0, section: 0)}
+            
+            // Update our data model and the table
             DispatchQueue.main.async {
-                self.feedPostsTableView.reloadData()
+                NSLog ("viewDidLoad: Loaded feed #\(feedId).\n  Old count: \(self.aggregatedRSSFeed?.count ?? 0)\n  Insertions: \(indexPathsOfInsertedRows.count)\n  Deletions: \(indexPathsOfDeletedRows.count)\n  New count: \(aggregatedFeed.count)")
+                self.aggregatedRSSFeed = aggregatedFeed
+                self.feedPostsTableView.performBatchUpdates ({
+                    self.feedPostsTableView.deleteRows(at: indexPathsOfDeletedRows,
+                                                       with: .automatic)
+                    self.feedPostsTableView.insertRows(at: indexPathsOfInsertedRows,
+                                                       with: .automatic)
+                })
             }
         }
     }

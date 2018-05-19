@@ -32,6 +32,7 @@ class RSSFeedInfo {
 
 class RSSFeedPost {
     var feedId: Int
+    var uniqueHash: Data?
     var rssFeedItem: RSSFeedItem?
     var atomFeedEntry: AtomFeedEntry?
     var title: String? = nil
@@ -54,6 +55,7 @@ class RSSFeedPost {
 
 class RSSFeedPostSummary {
     var feedId: Int
+    var uniqueHash: Data? = nil
     var title: String? = nil
     var URL: URL? = nil
     var imageURL: URL? = nil
@@ -67,6 +69,7 @@ class RSSFeedPostSummary {
         self.imageURL = post.imageURL
         self.date = post.date ?? Date() // TODO: CHANGE THIS DEFAULT?
         self.author = post.author
+        self.uniqueHash = post.uniqueHash
     }
 }
 
@@ -77,6 +80,7 @@ class RSSFeeds {
     
     // A dictionary relating feed ids to info about each RSS feed
     public var feedsInfo = [Int : RSSFeedInfo]()
+    public var numberOfFeeds = 0
     
     // A dictionary relating feed ids to the postings we've pulled from those feeds
     private var feedPosts = [Int : [RSSFeedPost]]()
@@ -84,10 +88,25 @@ class RSSFeeds {
     // A dispatch queue to fetch feeds on background thread(s)
     let feedReadQueue = DispatchQueue(label: "com.couturelane.feedReadQueue", qos: DispatchQoS.userInteractive)
     
-    // MARK: Public interface
+    // DEBUG: Set to true to get some logging
+    let DEBUG = true
     
+    // MARK: Public interface
+
+    // Callback function for clients.  After updating all the feeds, this
+    // function (when provided) will be called after each individual feed's
+    // posts have been incorporated into the aggregated feed.  Additionally,
+    // two arrays will contain array indices of deleted and added posts,
+    // allowing the caller to recreate the insert and delete functions required
+    // to transform the previous aggregated feed into the latest one.
+    typealias FeedLoadCompletion = (_ feedId: Int,
+                                    _ aggregatedFeed: [RSSFeedPostSummary],
+                                    _ indicesOfDeletedPosts: [Int],
+                                    _ indicesOfInsertedPosts: [Int]) -> Void
+
     public func updateFeedsFromRSS (viewForProgressHUD view: UIView?,
                                     afterEachFeedIsRead callback: FeedLoadCompletion?) {
+        if DEBUG { NSLog ("updateFeedsFromRSS: Starting") }
         getRSSFeedsInfo(viewForProgressHUD: view) {
             var bti : UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
             bti = UIApplication.shared.beginBackgroundTask {
@@ -141,16 +160,20 @@ class RSSFeeds {
     private func addOrUpdateAFeed(_ newFeed: RSSFeedInfo) {
         // If we already have this feed, update its info
         if let feedToUpdate = feedsInfo[newFeed.id] {
-            NSLog ("Updating Feed #\(feedToUpdate.id)")
+            if DEBUG { NSLog ("addOrUpdateAFeed: Updating Feed #\(feedToUpdate.id)") }
             feedToUpdate.logoURL = newFeed.logoURL
             feedToUpdate.name = newFeed.name
             feedToUpdate.type = newFeed.type
             feedToUpdate.URL = newFeed.URL
         }
         else { // This is a new feed
-            feedsInfo[newFeed.id] = newFeed
-            feedPosts[newFeed.id] = [RSSFeedPost]()
-            NSLog("Adding Feed #\(newFeed.id)")
+            // TODO: REMOVE THIS DEBUG IF
+            if numberOfFeeds < 30 {
+                numberOfFeeds += 1
+                feedsInfo[newFeed.id] = newFeed
+                feedPosts[newFeed.id] = [RSSFeedPost]()
+                if DEBUG { NSLog("addOrUpdateAFeed: Adding Feed #\(newFeed.id)") }
+            }
         }
     }
     
@@ -158,34 +181,36 @@ class RSSFeeds {
     private func readAllFeeds(afterEachFeedIsRead callback: FeedLoadCompletion?) {
         for feed in feedsInfo.values {
             guard !feed.isUpdatingNow else { continue }
-            NSLog ("readAllFeeds: Reading feed #\(feed.id)")
+            if DEBUG { NSLog ("readAllFeeds: Reading feed #\(feed.id)") }
             readOneFeed(feedId: feed.id) {
                 (newFeedPosts) in
                 // Add our new feed post array to the dictionary of those, update our
                 // aggregated feed, and alert our caller
-                self.feedPosts[feed.id] = newFeedPosts
-                self.aggregatedFeed = self.makeAggregatedFeed()
-                NSLog ("readAllFeeds: Finished feed #\(feed.id)")
-                DispatchQueue.main.async { // Use main thread to get back into UI code
-                    callback?(feed.id)
-                }
+//                self.feedPosts[feed.id] = newFeedPosts
+                let (newAggregatedFeed,
+                     indicesOfDeletedPosts,
+                        indicesOfInsertedPosts) = self.updateAggregatedFeed(forFeedId: feed.id, postsForFeed: newFeedPosts)
+                if self.DEBUG { NSLog ("readAllFeeds: Finished feed #\(feed.id)") }
+                    callback?(feed.id, newAggregatedFeed,
+                              indicesOfDeletedPosts, indicesOfInsertedPosts)
             }
         }
     }
     
     // Call out to a single RSS feed's URL, grab the posts, and process them.  Return the
     // new feed in the callback function.
-    func readOneFeed(feedId: Int, callback: @escaping ([RSSFeedPost]?) -> Void) {
+    func readOneFeed(feedId: Int, callback: @escaping ([RSSFeedPost]) -> Void) {
         
         // See if we're already reading this feed
         guard let feedInfo = feedsInfo[feedId],
               !feedInfo.isUpdatingNow else { return }
         
+        if DEBUG { NSLog ("readOneFeed: Starting for feed \(feedId)") }
         // Set the flag to tell us we're pulling this feed
         feedInfo.isUpdatingNow = true
 
         // Start a new list of posts for this feed
-        var feedPosts = [RSSFeedPost]()
+        var fetchedFeedPosts = [RSSFeedPost]()
         
         // Fetch the feed posts.  These fetches are handled on concurrent dispatch queues,
         // and hence may complete in any order.
@@ -206,7 +231,7 @@ class RSSFeeds {
                     for item in feedItems {
                         if let newPost = self.createRSSFeedPost(feedId: feedId,
                                                                 rssItem: item) {
-                            feedPosts.append(newPost)
+                            fetchedFeedPosts.append(newPost)
                         }
                     }
                 }
@@ -216,7 +241,7 @@ class RSSFeeds {
                     for entry in feedEntries {
                         if let newPost = self.createAtomFeedPost(feedId: feedId,
                                                                  atomEntry: entry) {
-                            feedPosts.append(newPost)
+                            fetchedFeedPosts.append(newPost)
                         }
                     }
                 }
@@ -225,7 +250,10 @@ class RSSFeeds {
             // Update the feed's info and callback to our caller
             feedInfo.lastRefreshedDate = Date()
             feedInfo.isUpdatingNow = false
-            callback(feedPosts)
+            if self.DEBUG {
+                NSLog ("readOneFeed: Processed feed \(feedId) Read \(fetchedFeedPosts.count) posts")
+            }
+            callback(fetchedFeedPosts)
         }
     }
 
@@ -284,6 +312,10 @@ class RSSFeeds {
             newPost.URL = postURL
             newPost.imageURL = imageURLFromRSSFeedItem(rssItem)
         }
+        // Make a unique hash to identify this post
+        let uniqueString = newPost.date!.description + newPost.title! + (newPost.author ?? "")
+        newPost.uniqueHash = MD5(string: uniqueString)
+        
         return newPost
     }
 
@@ -355,7 +387,70 @@ class RSSFeeds {
         return !(allowableImageTypes.index(of: type) == nil)
     }
     
-    typealias FeedLoadCompletion = (Int) -> Void
+    // Make a new aggregated feed, and also build an array of post insertions which will
+    // let the UI know what posts have just been added or deleted.  The only posts which have
+    // changed will all come from the given feed id.  Return new aggregated feed array,
+    // plus the arrays of deleted Post indices and inserted ones.
+    private func updateAggregatedFeed(forFeedId feedId: Int,
+                                      postsForFeed: [RSSFeedPost])
+                                      -> ([RSSFeedPostSummary], [Int], [Int]) {
+        if DEBUG  { NSLog ("*** updateAggregatedFeed: started for feed: \(feedId) Current count: \(self.aggregatedFeed.count)") }
+        
+        objc_sync_enter("updateAggregatedFeed_critical_section")
+        defer { objc_sync_exit("updateAggregatedFeed_critical_section") }
+        
+        self.feedPosts[feedId] = postsForFeed
+
+        var currentFeed = self.aggregatedFeed
+        let newAggregatedFeed = makeAggregatedFeed()
+        
+        // First make a list of current entries to delete
+        var indicesOfDeletedPosts = [Int]()
+        
+        // Check all the current posts which came from the given feed id
+        for (index, post) in currentFeed.enumerated() {
+            if post.feedId == feedId {
+                // Does this post still exist in the new aggregated feed?
+                let postIndex = newAggregatedFeed.index(
+                                    where: { $0.uniqueHash == post.uniqueHash })
+                if postIndex == nil { // This post was deleted
+                    indicesOfDeletedPosts.append(index)
+                }
+            }
+        }
+        
+        // Remove the deleted posts from the current feed (copy) to reset the indices
+        // of the remaining posts.  This is necessary because UITableViews, when updated
+        // in batches of transactions, process all deletes before any insertions.
+        currentFeed = currentFeed
+            .enumerated()
+            .filter { !indicesOfDeletedPosts.contains($0.offset) }
+            .map { $0.element }
+
+        // Now make a list of newly inserted posts
+        var indicesOfNewPosts = [Int]()
+        
+        // Read through the new aggregated feed list and note any insertions
+        for (index, post) in newAggregatedFeed.enumerated() {
+            if post.feedId == feedId {
+                if currentFeed.count < index + 1 {
+                    // A row was inserted at the bottom
+                    indicesOfNewPosts.append(index)
+                    currentFeed.append(post)
+                }
+                else if currentFeed[index].uniqueHash != post.uniqueHash {
+                    // An insertion happened here at this index
+                    indicesOfNewPosts.append(index)
+                    currentFeed.insert(post, at: index)
+                }
+            }
+        }
+
+        // Update our current aggregated feed and return the affected post indices to caller
+        if self.DEBUG  { NSLog ("*** updateAggregatedFeed: finished for feed: \(feedId) \(feedsInfo[feedId]!.name)\n  Old count: \(self.aggregatedFeed.count)\n  Insertions: \(indicesOfNewPosts.count)\n  Deletions: \(indicesOfDeletedPosts.count)\n  New count: \(newAggregatedFeed.count)") }
+        self.aggregatedFeed = newAggregatedFeed
+        return (newAggregatedFeed, indicesOfDeletedPosts, indicesOfNewPosts)
+    }
     
     // Grab all of the posts current in all feeds and sort them by date/time
     private func makeAggregatedFeed() -> [RSSFeedPostSummary] {

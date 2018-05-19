@@ -79,3 +79,18 @@ extension UILabel {
             documentAttributes: nil)
     }
 }
+
+// Creates a 16-byte MD5 hash of the given string.  Requires
+// #import <CommonCrypto/CommonCrypto.h> in bridging header file
+func MD5(string: String) -> Data {
+    let messageData = string.data(using:.utf8)!
+    var digestData = Data(count: Int(CC_MD5_DIGEST_LENGTH))
+    
+    _ = digestData.withUnsafeMutableBytes {digestBytes in
+        messageData.withUnsafeBytes {messageBytes in
+            CC_MD5(messageBytes, CC_LONG(messageData.count), digestBytes)
+        }
+    }
+    
+    return digestData
+}
