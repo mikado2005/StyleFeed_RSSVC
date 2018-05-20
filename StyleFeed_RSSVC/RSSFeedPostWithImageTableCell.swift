@@ -11,6 +11,8 @@ import Kingfisher
 
 class RSSFeedPostWithImageTableCell : UITableViewCell {
     
+    let DEBUG = false
+    
     @IBOutlet weak var feedNameLabel: UILabel!
     @IBOutlet weak var postTitleLabel: UILabel!
     @IBOutlet weak var containerView: UIView!
@@ -19,7 +21,6 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
     @IBOutlet weak var authorAndDateLabel: UILabel!
     @IBOutlet weak var feedImageWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var authorLabelHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak private var postImageHeightConstraint: NSLayoutConstraint!
 
     // Save the default width of the postImageView
     var postImageViewWidth:CGFloat = 0
@@ -33,33 +34,37 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
     let feedImageNormalWidth: CGFloat = 36
     let authorLabelNormalHeight: CGFloat = 13
     
+    // Properties used by the tableview to navigate:
+    var tableView: UITableView!
+    var indexPath: IndexPath!
     var feedPostURL: URL!
+    
+    private func DEBUG_LOG(_ s: String) { if DEBUG { NSLog(s) } }
     
     override func layoutIfNeeded() {
         super.layoutIfNeeded()
-        NSLog ("RSSFeedPostWithImageTableCell: AFTER layoutIfNeeded \(postTitleLabel.text ?? "---") \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight) Post image VIEW bounds: \(postImageView?.bounds)")
+        DEBUG_LOG ("RSSFeedPostWithImageTableCell: AFTER layoutIfNeeded \(postTitleLabel.text ?? "---") \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight) Post image VIEW bounds: \(postImageView?.bounds)")
     }
     
     override func layoutSubviews() {
         postTitleLabel.sizeToFit()
 
         super.layoutSubviews()
-        NSLog ("RSSFeedPostWithImageTableCell: AFTER layoutSubviews \(postTitleLabel.text ?? "---") \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight) Post image VIEW bounds: \(postImageView?.bounds)")
+        DEBUG_LOG ("RSSFeedPostWithImageTableCell: AFTER layoutSubviews \(postTitleLabel.text ?? "---") \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight) Post image VIEW bounds: \(postImageView?.bounds)")
 //        postImageViewWidth = postImageView.bounds.width
-//        NSLog ("RSSFeedPostWithImageTableCell: layoutSubviews)(self.description) Post image VIEW width: \(postImageViewWidth)")
+//        DEBUG_LOG ("RSSFeedPostWithImageTableCell: layoutSubviews)(self.description) Post image VIEW width: \(postImageViewWidth)")
     }
     
     override func updateConstraints() {
-        NSLog ("RSSFeedPostWithImageTableCell: updateConstraints \(postTitleLabel.text ?? "---") \(self.description) setting height constraing to Post image height: \(postImageHeight) Post image VIEW bounds: \(postImageView?.bounds)")
-//        setPostImageHeightConstraint(toHeight: postImageHeight)
+        DEBUG_LOG ("RSSFeedPostWithImageTableCell: updateConstraints \(postTitleLabel.text ?? "---") \(self.description) setting height constraing to Post image height: \(postImageHeight) Post image VIEW bounds: \(postImageView?.bounds)")
         super.updateConstraints()
-        NSLog ("RSSFeedPostWithImageTableCell: AFTER updateConstraints \(postTitleLabel.text ?? "---") \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight) Post image VIEW bounds: \(postImageView?.bounds)")
+        DEBUG_LOG ("RSSFeedPostWithImageTableCell: AFTER updateConstraints \(postTitleLabel.text ?? "---") \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight) Post image VIEW bounds: \(postImageView?.bounds)")
 //        postImageViewWidth = postImageView.bounds.width
-//        NSLog ("RSSFeedPostWithImageTableCell: updateConstraints)(self.description) Post image VIEW width: \(postImageViewWidth)")
+//        DEBUG_LOG ("RSSFeedPostWithImageTableCell: updateConstraints)(self.description) Post image VIEW width: \(postImageViewWidth)")
     }
 
     override func awakeFromNib() {
-        NSLog ("RSSFeedPostWithImageTableCell: awakeFromNib START \(postTitleLabel.text ?? "---") \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight)")
+        DEBUG_LOG ("RSSFeedPostWithImageTableCell: awakeFromNib START \(postTitleLabel.text ?? "---") \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight)")
 
         translatesAutoresizingMaskIntoConstraints = false
         
@@ -82,27 +87,22 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
         containerView.layer.shadowRadius = 3.0
         
         postImageViewWidth = postImageView.bounds.width
-        NSLog ("RSSFeedPostWithImageTableCell: awakeFromNib END \(postTitleLabel.text ?? "---") \(self.description) postImageViewWidth: \(postImageViewWidth)")
+        DEBUG_LOG ("RSSFeedPostWithImageTableCell: awakeFromNib END \(postTitleLabel.text ?? "---") \(self.description) postImageViewWidth: \(postImageViewWidth)")
 
     }
     
-    func setPostImageHeightConstraint (toHeight height: CGFloat) {
-        postImageHeightConstraint.constant = height
-    }
-    
     override func prepareForReuse() {
-        NSLog ("RSSFeedPostWithImageTableCell: prepareForReuse \(postTitleLabel.text ?? "---") \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight)")
+        DEBUG_LOG ("RSSFeedPostWithImageTableCell: prepareForReuse \(postTitleLabel.text ?? "---") \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight)")
         // If we happen to be in the middle of a KingFisher download task, abort it
         postImageView.kf.cancelDownloadTask()
         postImageView.image = nil
         postImageWidth = 0
         postImageHeight = 0
-        setPostImageHeightConstraint(toHeight: 0)
         super.prepareForReuse()
     }
     
     func setPostImage(imageURL : URL) {
-        NSLog ("RSSFeedPostWithImageTableCell: setPostImage \(postTitleLabel.text ?? "---") \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight)")
+        DEBUG_LOG ("RSSFeedPostWithImageTableCell: setPostImage \(postTitleLabel.text ?? "---") \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight)")
 
         let kingfisherImageLoadingOptions:KingfisherOptionsInfo =
             [.transition(.fade(0.2)), .processor(self)]
@@ -116,17 +116,25 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
                     if error == nil, let image = image {
                         self.postImageWidth = image.size.width
                         self.postImageHeight = image.size.height
-                        self.setPostImageHeightConstraint(toHeight: image.size.height)
+  
+                        // TODO: THIS HORRIBLE HACK IS NOT GOING TO WORK FOREVER.
+                        // Instead maybe send a notification to the tableview object,
+                        // which would then decide whether to reload the row?
+                        if self.tableView.cellForRow(at: self.indexPath) != nil {
+                            self.tableView.reloadRows(at: [self.indexPath],
+                                                      with: .middle)
+                        }
 //                        self.setNeedsLayout()
 //                        self.layoutIfNeeded()
 //                        self.updateConstraints()
 //                        self.layoutSubviews()
 //                        self.postTitleLabel.layoutIfNeeded()
+                        self.DEBUG_LOG ("RSSFeedPostWithImageTableCell: setPostImage CALLBACK \(self.postTitleLabel.text ?? "---") \(self.description) Post image width: \(self.postImageWidth) Post image height: \(self.postImageHeight) postImageView bounds: \(self.postImageView.bounds)")
+                        
                     }
                     else {
                         self.postImageView.image = nil
                         self.postImageHeight = 0
-                        self.setPostImageHeightConstraint(toHeight: 0)
                     }
         }
     }
@@ -142,7 +150,7 @@ extension RSSFeedPostWithImageTableCell: ImageProcessor {
     }
     
     func process(item: ImageProcessItem, options: KingfisherOptionsInfo) -> Image? {
-        NSLog ("RSSFeedPostWithImageTableCell: process \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight)")
+        DEBUG_LOG ("RSSFeedPostWithImageTableCell: process \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight)")
         switch item {
         case .image(let uiImage):
             return resizePostFeedImage(fromImage: uiImage)
@@ -155,7 +163,7 @@ extension RSSFeedPostWithImageTableCell: ImageProcessor {
     }
     
     func resizePostFeedImage(fromImage image: UIImage) -> UIImage {
-        NSLog ("RSSFeedPostWithImageTableCell: resizeImageAndSetHeightConstraint Post image width: \(postImageWidth) Post image height: \(postImageHeight)")
+        DEBUG_LOG ("RSSFeedPostWithImageTableCell: resizeImageAndSetHeightConstraint Post image width: \(postImageWidth) Post image height: \(postImageHeight)")
         guard postImageViewWidth > 0 else {
             return image
         }

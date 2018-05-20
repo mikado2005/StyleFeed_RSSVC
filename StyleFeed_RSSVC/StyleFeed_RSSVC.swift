@@ -73,13 +73,13 @@ extension StyleFeed_RSSVC: UITableViewDelegate, UITableViewDataSource {
         return aggregatedRSSFeed?.count ?? 0
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
-    
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return UITableViewAutomaticDimension
+//    }
+//    
+//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return UITableViewAutomaticDimension
+//    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
@@ -87,6 +87,8 @@ extension StyleFeed_RSSVC: UITableViewDelegate, UITableViewDataSource {
             for: indexPath) as! RSSFeedPostWithImageTableCell
         
         // Set defaults for the cell
+        cell.tableView = tableView
+        cell.indexPath = indexPath
         cell.postImageView.image = nil
         cell.feedImageView.image = nil
         //cell.setPostImageHeightConstraint(toHeight: cell.postImageNormalHeight)
@@ -117,7 +119,6 @@ extension StyleFeed_RSSVC: UITableViewDelegate, UITableViewDataSource {
         }
         else {
             cell.postImageView.image = nil
-            cell.setPostImageHeightConstraint(toHeight: 0)
         }
         
         // Set the author and posting date field

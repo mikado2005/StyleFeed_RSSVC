@@ -90,6 +90,7 @@ class RSSFeeds {
     
     // DEBUG: Set to true to get some logging
     let DEBUG = true
+    let FAKE_COUTURE_LANE_SERVER = true
     
     // MARK: Public interface
 
@@ -107,14 +108,20 @@ class RSSFeeds {
     public func updateFeedsFromRSS (viewForProgressHUD view: UIView?,
                                     afterEachFeedIsRead callback: FeedLoadCompletion?) {
         if DEBUG { NSLog ("updateFeedsFromRSS: Starting") }
-        getRSSFeedsInfo(viewForProgressHUD: view) {
-            var bti : UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
-            bti = UIApplication.shared.beginBackgroundTask {
-                UIApplication.shared.endBackgroundTask(bti)
-            }
-            guard bti != UIBackgroundTaskInvalid else { return }
+        if FAKE_COUTURE_LANE_SERVER {
+            self.addOrUpdateAFeed(
+                RSSFeedInfo(id: 1,
+                            name: "Elle",
+                            url: URL(string: "https://www.elle.com/rss/fashion.xml")!,
+                            type: "rss",
+                            logoURLString: nil))
             self.feedReadQueue.async {
                 self.readAllFeeds(afterEachFeedIsRead: callback)
+            }
+        }
+        else {
+            getRSSFeedsInfo(viewForProgressHUD: view) {
+                self.fetchAllFeedsInBackground(afterEachFeedIsRead: callback)
             }
         }
     }
@@ -156,6 +163,18 @@ class RSSFeeds {
                 //TODO:
                 print ("Some appropriate error log here")
         })
+    }
+    
+    // Begin the process of fetching and parsing all the feeds on a background queue
+    private func fetchAllFeedsInBackground(afterEachFeedIsRead callback: FeedLoadCompletion?) {
+        var bti : UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+        bti = UIApplication.shared.beginBackgroundTask {
+            UIApplication.shared.endBackgroundTask(bti)
+        }
+        guard bti != UIBackgroundTaskInvalid else { return }
+        self.feedReadQueue.async {
+            self.readAllFeeds(afterEachFeedIsRead: callback)
+        }
     }
     
     private func addOrUpdateAFeed(_ newFeed: RSSFeedInfo) {

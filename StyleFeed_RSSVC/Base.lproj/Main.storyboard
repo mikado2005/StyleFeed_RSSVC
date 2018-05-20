@@ -53,14 +53,11 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="samplepic2" translatesAutoresizingMaskIntoConstraints="NO" id="hYh-R4-8uN" userLabel="Post Image View">
-                                                            <rect key="frame" x="0.0" y="50" width="355" height="226"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="226" identifier="PostImageInitialHeightConstraint" id="tvj-a6-Yfu"/>
-                                                            </constraints>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="samplepic2" translatesAutoresizingMaskIntoConstraints="NO" id="hYh-R4-8uN" userLabel="Post Image View">
+                                                            <rect key="frame" x="0.0" y="50" width="355" height="281"/>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSf-Wj-7Tb" userLabel="Post Title Label">
-                                                            <rect key="frame" x="12" y="291" width="294" height="73"/>
+                                                            <rect key="frame" x="12" y="346" width="294" height="18"/>
                                                             <attributedString key="attributedText">
                                                                 <fragment content="Post Title">
                                                                     <attributes>
@@ -115,7 +112,6 @@
                                             <outlet property="feedImageView" destination="6nU-lm-h3s" id="RAT-Qc-U0T"/>
                                             <outlet property="feedImageWidthConstraint" destination="1jJ-u3-8eq" id="wJW-sP-xnx"/>
                                             <outlet property="feedNameLabel" destination="9E5-9R-3L8" id="PEI-HS-qCT"/>
-                                            <outlet property="postImageHeightConstraint" destination="tvj-a6-Yfu" id="XNd-jD-D1i"/>
                                             <outlet property="postImageView" destination="hYh-R4-8uN" id="3Yj-k1-Mmv"/>
                                             <outlet property="postTitleLabel" destination="aSf-Wj-7Tb" id="52H-zm-Zsj"/>
                                             <segue destination="zF5-kk-VS9" kind="show" id="Smk-Tg-y4w"/>
