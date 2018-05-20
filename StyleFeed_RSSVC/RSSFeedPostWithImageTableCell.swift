@@ -26,6 +26,10 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
 
     // Save the default width of the postImageView
     var postImageViewWidth:CGFloat = 0
+    
+    // Height and width of the post feed image
+    var postImageWidth:CGFloat = 0
+    var postImageHeight:CGFloat = 0
 
     // Sync these settings with height and widths constraints on Storyboard
     let postImageNormalHeight: CGFloat = 226
@@ -34,9 +38,22 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
     
     var feedPostURL: URL!
     
-    //override func
+    override func layoutSubviews() {
+        NSLog ("RSSFeedPostWithImageTableCell: awakeFromNib \(self.description) Post image width: \(postImageWidth)")
+        if postImageWidth != 0 {
+            setPostImageAspectRatioConstraint(aspectRatio: postImageWidth / postImageHeight)
+        }
+        super.layoutSubviews()
+    }
+    
+    override func updateConstraints() {
+        NSLog ("RSSFeedPostWithImageTableCell: updateConstraints \(self.description) Post image width: \(postImageWidth)")
+        super.updateConstraints()
+    }
 
     override func awakeFromNib() {
+        NSLog ("RSSFeedPostWithImageTableCell: awakeFromNib \(self.description) Post image width: \(postImageWidth)")
+
         super.awakeFromNib()
         
         feedImageView.layer.cornerRadius = feedImageView.bounds.height / 2
@@ -62,6 +79,19 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
 
     }
     
+    func setPostImageAspectRatioConstraint (aspectRatio: CGFloat) {
+        let newAspectRatioConstraint = NSLayoutConstraint(
+            item: postImageView,
+            attribute: NSLayoutAttribute.width,
+            relatedBy: NSLayoutRelation.equal,
+            toItem: postImageView,
+            attribute: NSLayoutAttribute.height,
+            multiplier: aspectRatio,
+            constant: 0.0)
+        newAspectRatioConstraint.priority = UILayoutPriority(rawValue: 999)
+        self.aspectConstraint = newAspectRatioConstraint
+    }
+    
     internal var aspectConstraint : NSLayoutConstraint? {
         didSet {
             if postImageInitialAspectConstraint != nil {
@@ -77,23 +107,29 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
     }
     
     override func prepareForReuse() {
-        super.prepareForReuse()
+        NSLog ("RSSFeedPostWithImageTableCell: prepareForReuse \(self.description) Post image width: \(postImageWidth)")
+        postImageView.kf.cancelDownloadTask()
         aspectConstraint = nil
+        super.prepareForReuse()
     }
     
     func setPostImage(imageURL : URL) {
-        
+
+        NSLog ("RSSFeedPostWithImageTableCell: setPostImage \(self.description) Post image width: \(postImageWidth)")
+
         let kingfisherImageLoadingOptions:KingfisherOptionsInfo =
             [.transition(.fade(0.2)), .processor(self)]
         
-        postImageView.download(
-            url: imageURL,
-            indicator: false,
-            placeholder: nil,
-            kingfisherOptions: kingfisherImageLoadingOptions) {
+        postImageView.kf.setImage(with: imageURL,
+                         placeholder: nil,
+                         options: kingfisherImageLoadingOptions,
+                         progressBlock: nil) {
                 (_ image: Image?, _ error: NSError?,
                  _ cacheType: CacheType, _ imageURL: URL?) in
                     if error == nil, let image = image {
+                    self.setPostImageAspectRatioConstraint(
+                        aspectRatio: image.size.width / image.size.height)
+                    self.contentView.setNeedsLayout()
             }
         }
     }
@@ -110,35 +146,28 @@ extension RSSFeedPostWithImageTableCell: ImageProcessor {
     }
     
     func process(item: ImageProcessItem, options: KingfisherOptionsInfo) -> Image? {
+        
+        NSLog ("RSSFeedPostWithImageTableCell: process \(self.description) Post image width: \(postImageWidth)")
         switch item {
         case .image(let uiImage):
-            return resizeImageAndSetHeightConstraint(fromImage: uiImage)
+            return resizePostFeedImage(fromImage: uiImage)
         case .data(let imageData):
             if let uiImage = UIImage(data: imageData) {
-                return resizeImageAndSetHeightConstraint(fromImage: uiImage)
+                return resizePostFeedImage(fromImage: uiImage)
             }
             else { return nil }
         }
     }
     
-    func resizeImageAndSetHeightConstraint(fromImage image: UIImage) -> UIImage {
+    func resizePostFeedImage(fromImage image: UIImage) -> UIImage {
+        
+        NSLog ("RSSFeedPostWithImageTableCell: resizeImageAndSetHeightConstraint Post image width: \(postImageWidth)")
         guard postImageViewWidth > 0 else {
             return image
         }
         let resizedImage = resizeImage(image: image, toFitWidth: postImageViewWidth)
-        DispatchQueue.main.async {
-            let aspect = image.size.width / image.size.height
-            self.aspectConstraint = NSLayoutConstraint(
-                item: self.postImageView,
-                attribute: NSLayoutAttribute.width,
-                relatedBy: NSLayoutRelation.equal,
-                toItem: self.postImageView,
-                attribute: NSLayoutAttribute.height,
-                multiplier: aspect,
-                constant: 0.0)
-            self.updateConstraints()
-            self.setNeedsLayout()
-        }
+        postImageWidth = resizedImage.size.width
+        postImageHeight = resizedImage.size.height
         return resizedImage
     }
 }

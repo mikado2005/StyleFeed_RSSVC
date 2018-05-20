@@ -161,23 +161,18 @@ extension StyleFeed_RSSVC: UITableViewDelegate, UITableViewDataSource {
         }
         else {
             cell.postImageView.image = nil
-            cell.postImageHeightConstraint.constant = 0
+//            cell.postImageHeightConstraint.constant = 0
         }
         
         // Set the author and posting date field
         var authorAndDate = describeTimeDifference(betweenPastDate: post.date,
                                                    andLaterDate: Date())
-        
         if let author = post.author ?? feedName {
             authorAndDate = "\(author) • \(authorAndDate)"
             cell.authorAndDateLabel.text = author
         }
         cell.authorAndDateLabel.text = authorAndDate
-        
         cell.feedPostURL = post.URL
-        
-//        print ("\(feedName ?? "---") \(post.date.description) -- \(post.title ?? "---") -- \(post.imageURL?.description ?? "---")")
-        
         return cell
     }
 }

@@ -169,7 +169,7 @@ class RSSFeeds {
         }
         else { // This is a new feed
             // TODO: REMOVE THIS DEBUG IF
-            if numberOfFeeds < 4 {
+            if numberOfFeeds < 1 {
                 numberOfFeeds += 1
                 feedsInfo[newFeed.id] = newFeed
                 feedPosts[newFeed.id] = [RSSFeedPost]()
@@ -232,7 +232,10 @@ class RSSFeeds {
                     for item in feedItems {
                         if let newPost = self.createRSSFeedPost(feedId: feedId,
                                                                 rssItem: item) {
-                            fetchedFeedPosts.append(newPost)
+                            // TODO: REMOVE THIS DEBUG IF
+                            if fetchedFeedPosts.count < 1 {
+                                fetchedFeedPosts.append(newPost)
+                            }
                         }
                     }
                 }
