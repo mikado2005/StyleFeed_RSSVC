@@ -36,18 +36,24 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
     var feedPostURL: URL!
     
     override func layoutSubviews() {
-        NSLog ("RSSFeedPostWithImageTableCell: awakeFromNib \(self.description) Post image width: \(postImageWidth)")
+        NSLog ("RSSFeedPostWithImageTableCell: layoutSubviews \(self.description) Post image width: \(postImageWidth)")
         super.layoutSubviews()
+//        postImageViewWidth = postImageView.bounds.width
+//        NSLog ("RSSFeedPostWithImageTableCell: layoutSubviews)(self.description) Post image VIEW width: \(postImageViewWidth)")
     }
     
     override func updateConstraints() {
         NSLog ("RSSFeedPostWithImageTableCell: updateConstraints \(self.description) Post image width: \(postImageWidth)")
         super.updateConstraints()
+//        postImageViewWidth = postImageView.bounds.width
+//        NSLog ("RSSFeedPostWithImageTableCell: updateConstraints)(self.description) Post image VIEW width: \(postImageViewWidth)")
     }
 
     override func awakeFromNib() {
         NSLog ("RSSFeedPostWithImageTableCell: awakeFromNib \(self.description) Post image width: \(postImageWidth)")
 
+        translatesAutoresizingMaskIntoConstraints = false
+        
         super.awakeFromNib()
         
         feedImageView.layer.cornerRadius = feedImageView.bounds.height / 2
@@ -67,6 +73,8 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
         containerView.layer.shadowRadius = 3.0
         
         postImageViewWidth = postImageView.bounds.width
+        NSLog ("RSSFeedPostWithImageTableCell: awakeFromNib \(self.description) postImageViewWidth: \(postImageViewWidth)")
+
     }
     
     func setPostImageHeightConstraint (toHeight height: CGFloat) {
@@ -93,6 +101,8 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
                 (_ image: Image?, _ error: NSError?,
                  _ cacheType: CacheType, _ imageURL: URL?) in
                     if error == nil, let image = image {
+                        self.postImageWidth = image.size.width
+                        self.postImageHeight = image.size.height
                         self.setPostImageHeightConstraint(toHeight: image.size.height)
             }
         }
