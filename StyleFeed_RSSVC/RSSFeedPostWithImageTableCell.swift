@@ -17,12 +17,9 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
     @IBOutlet weak var feedImageView: UIImageView!
     @IBOutlet weak var postImageView: UIImageView!
     @IBOutlet weak var authorAndDateLabel: UILabel!
-    @IBOutlet weak var postImageHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var feedImageWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var authorLabelHeightConstraint: NSLayoutConstraint!
-    
-    // The initial aspect ration of the posting's image as set in Storyboard
-    @IBOutlet weak var postImageInitialAspectConstraint: NSLayoutConstraint!
+    @IBOutlet weak private var postImageHeightConstraint: NSLayoutConstraint!
 
     // Save the default width of the postImageView
     var postImageViewWidth:CGFloat = 0
@@ -40,9 +37,6 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
     
     override func layoutSubviews() {
         NSLog ("RSSFeedPostWithImageTableCell: awakeFromNib \(self.description) Post image width: \(postImageWidth)")
-        if postImageWidth != 0 {
-            setPostImageAspectRatioConstraint(aspectRatio: postImageWidth / postImageHeight)
-        }
         super.layoutSubviews()
     }
     
@@ -73,48 +67,20 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
         containerView.layer.shadowRadius = 3.0
         
         postImageViewWidth = postImageView.bounds.width
-        if postImageInitialAspectConstraint != nil {
-            postImageView.removeConstraint(postImageInitialAspectConstraint)
-        }
-
     }
     
-    func setPostImageAspectRatioConstraint (aspectRatio: CGFloat) {
-        let newAspectRatioConstraint = NSLayoutConstraint(
-            item: postImageView,
-            attribute: NSLayoutAttribute.width,
-            relatedBy: NSLayoutRelation.equal,
-            toItem: postImageView,
-            attribute: NSLayoutAttribute.height,
-            multiplier: aspectRatio,
-            constant: 0.0)
-        newAspectRatioConstraint.priority = UILayoutPriority(rawValue: 999)
-        self.aspectConstraint = newAspectRatioConstraint
-    }
-    
-    internal var aspectConstraint : NSLayoutConstraint? {
-        didSet {
-            if postImageInitialAspectConstraint != nil {
-                postImageView.removeConstraint(postImageInitialAspectConstraint)
-            }
-            if oldValue != nil {
-                postImageView.removeConstraint(oldValue!)
-            }
-            if aspectConstraint != nil {
-                postImageView.addConstraint(aspectConstraint!)
-            }
-        }
+    func setPostImageHeightConstraint (toHeight height: CGFloat) {
+        postImageHeightConstraint.constant = height
     }
     
     override func prepareForReuse() {
         NSLog ("RSSFeedPostWithImageTableCell: prepareForReuse \(self.description) Post image width: \(postImageWidth)")
+        // If we happen to be in the middle of a KingFisher download task, abort it
         postImageView.kf.cancelDownloadTask()
-        aspectConstraint = nil
         super.prepareForReuse()
     }
     
     func setPostImage(imageURL : URL) {
-
         NSLog ("RSSFeedPostWithImageTableCell: setPostImage \(self.description) Post image width: \(postImageWidth)")
 
         let kingfisherImageLoadingOptions:KingfisherOptionsInfo =
@@ -127,26 +93,22 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
                 (_ image: Image?, _ error: NSError?,
                  _ cacheType: CacheType, _ imageURL: URL?) in
                     if error == nil, let image = image {
-                    self.setPostImageAspectRatioConstraint(
-                        aspectRatio: image.size.width / image.size.height)
-                    self.contentView.setNeedsLayout()
+                        self.setPostImageHeightConstraint(toHeight: image.size.height)
             }
         }
     }
-    
 }
 
 // This extension defines a Kingfisher ImageProcessor for the cell which will
-// scale a downloaded image to the current width of the post image view.  To use,
-// this ImageProcessor is specified as an optional Processor in the Kingfisher
-// image request (in StyleFeed_RSSVC).
+// scale a downloaded image to the current width of the post image view, thus placing
+// a smaller image in the image cache.  To use, this ImageProcessor is specified as an
+// optional Processor in the Kingfisher image request (in setPostImage:).
 extension RSSFeedPostWithImageTableCell: ImageProcessor {
     var identifier: String {
         return "com.CoutureLane.RSSFeedPostWithImageTableCell.ImageResizer"
     }
     
     func process(item: ImageProcessItem, options: KingfisherOptionsInfo) -> Image? {
-        
         NSLog ("RSSFeedPostWithImageTableCell: process \(self.description) Post image width: \(postImageWidth)")
         switch item {
         case .image(let uiImage):
@@ -160,7 +122,6 @@ extension RSSFeedPostWithImageTableCell: ImageProcessor {
     }
     
     func resizePostFeedImage(fromImage image: UIImage) -> UIImage {
-        
         NSLog ("RSSFeedPostWithImageTableCell: resizeImageAndSetHeightConstraint Post image width: \(postImageWidth)")
         guard postImageViewWidth > 0 else {
             return image
