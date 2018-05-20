@@ -233,9 +233,9 @@ class RSSFeeds {
                         if let newPost = self.createRSSFeedPost(feedId: feedId,
                                                                 rssItem: item) {
                             // TODO: REMOVE THIS DEBUG IF
-//                            if fetchedFeedPosts.count < 1 {
+                            if fetchedFeedPosts.count < 30 {
                                 fetchedFeedPosts.append(newPost)
-//                            }
+                            }
                         }
                     }
                 }

@@ -56,10 +56,10 @@
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="samplepic2" translatesAutoresizingMaskIntoConstraints="NO" id="hYh-R4-8uN" userLabel="Post Image View">
                                                             <rect key="frame" x="0.0" y="50" width="355" height="226"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" priority="999" constant="226" identifier="PostImageInitialHeightConstraint" id="tvj-a6-Yfu"/>
+                                                                <constraint firstAttribute="height" constant="226" identifier="PostImageInitialHeightConstraint" id="tvj-a6-Yfu"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSf-Wj-7Tb" userLabel="Post Title Label">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSf-Wj-7Tb" userLabel="Post Title Label">
                                                             <rect key="frame" x="12" y="291" width="294" height="73"/>
                                                             <attributedString key="attributedText">
                                                                 <fragment content="Post Title">

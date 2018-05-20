@@ -54,9 +54,7 @@ class StyleFeed_RSSVC: UIViewController {
     override func shouldPerformSegue(withIdentifier identifier: String,
                                      sender: Any?) -> Bool {
         if let cell = sender as? RSSFeedPostWithImageTableCell,
-           cell.feedPostURL != nil {
-                return true
-        }
+           cell.feedPostURL != nil { return true }
         return false
     }
     
@@ -65,7 +63,6 @@ class StyleFeed_RSSVC: UIViewController {
            let url = cell.feedPostURL,
            let destinationVC = segue.destination as? WebPageViewerViewController {
                 destinationVC.webPageToDisplay = url
-            print ("Prepare for segue")
         }
     }
 }
@@ -76,6 +73,14 @@ extension StyleFeed_RSSVC: UITableViewDelegate, UITableViewDataSource {
         return aggregatedRSSFeed?.count ?? 0
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(
             withIdentifier: "RSSFeedPostCellWithImage",
@@ -84,7 +89,7 @@ extension StyleFeed_RSSVC: UITableViewDelegate, UITableViewDataSource {
         // Set defaults for the cell
         cell.postImageView.image = nil
         cell.feedImageView.image = nil
-        cell.setPostImageHeightConstraint(toHeight: cell.postImageNormalHeight)
+        //cell.setPostImageHeightConstraint(toHeight: cell.postImageNormalHeight)
         cell.feedImageWidthConstraint.constant = cell.feedImageNormalWidth
         cell.authorLabelHeightConstraint.constant = cell.authorLabelNormalHeight
         
