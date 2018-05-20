@@ -90,7 +90,7 @@ class RSSFeeds {
     
     // DEBUG: Set to true to get some logging
     let DEBUG = true
-    let FAKE_COUTURE_LANE_SERVER = true
+    let FAKE_COUTURE_LANE_SERVER = false
     
     // MARK: Public interface
 
@@ -111,10 +111,16 @@ class RSSFeeds {
         if FAKE_COUTURE_LANE_SERVER {
             self.addOrUpdateAFeed(
                 RSSFeedInfo(id: 1,
-                            name: "Elle",
+                            name: "Elle Fashion",
                             url: URL(string: "https://www.elle.com/rss/fashion.xml")!,
                             type: "rss",
                             logoURLString: nil))
+            self.addOrUpdateAFeed(
+                RSSFeedInfo(id: 2,
+                        name: "Elle Beauty",
+                        url: URL(string: "https://www.elle.com/rss/beauty.xml")!,
+                        type: "rss",
+                        logoURLString: nil))
             self.feedReadQueue.async {
                 self.readAllFeeds(afterEachFeedIsRead: callback)
             }
@@ -188,12 +194,12 @@ class RSSFeeds {
         }
         else { // This is a new feed
             // TODO: REMOVE THIS DEBUG IF
-            if numberOfFeeds < 1 {
+//            if numberOfFeeds < 1 {
                 numberOfFeeds += 1
                 feedsInfo[newFeed.id] = newFeed
                 feedPosts[newFeed.id] = [RSSFeedPost]()
                 if DEBUG { NSLog("addOrUpdateAFeed: Adding Feed #\(newFeed.id)") }
-            }
+//            }
         }
     }
     
@@ -252,9 +258,9 @@ class RSSFeeds {
                         if let newPost = self.createRSSFeedPost(feedId: feedId,
                                                                 rssItem: item) {
                             // TODO: REMOVE THIS DEBUG IF
-                            if fetchedFeedPosts.count < 30 {
+//                            if fetchedFeedPosts.count < 30 {
                                 fetchedFeedPosts.append(newPost)
-                            }
+//                            }
                         }
                     }
                 }
