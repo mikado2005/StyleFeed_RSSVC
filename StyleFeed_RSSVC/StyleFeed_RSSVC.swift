@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class StyleFeed_RSSVC: UIViewController {
     
@@ -83,7 +84,7 @@ extension StyleFeed_RSSVC: UITableViewDelegate, UITableViewDataSource {
         // Set defaults for the cell
         cell.postImageView.image = nil
         cell.feedImageView.image = nil
-        cell.postImageHeightConstraint.constant = cell.postImageNormalHeight
+        //cell.postImageHeightConstraint.constant = cell.postImageNormalHeight
         cell.feedImageWidthConstraint.constant = cell.feedImageNormalWidth
         cell.authorLabelHeightConstraint.constant = cell.authorLabelNormalHeight
         
@@ -107,7 +108,40 @@ extension StyleFeed_RSSVC: UITableViewDelegate, UITableViewDataSource {
         }
         
         if let imageURL = post.imageURL {
-            cell.postImageView.download(url: imageURL, indicator: false, placeholder: nil)
+            cell.setPostImage(imageURL: imageURL)
+//            let kingfisherImageLoadingOptions:KingfisherOptionsInfo =
+//                [.transition(.fade(0.2)), .processor(cell)]
+//
+//            cell.postImageView.download(url: imageURL,
+//                                        indicator: false,
+//                                        placeholder: nil,
+//                                        kingfisherOptions: kingfisherImageLoadingOptions) {
+//                (_ image: Image?, _ error: NSError?,
+//                 _ cacheType: CacheType, _ imageURL: URL?) in
+//                if error == nil, let image = image {
+//                    cell.postImageHeightConstraint.constant = image.size.height
+//                    let resizedImage =
+//                        resizeImage(image: image,
+//                                    toFitWidth: cell.postImageView.bounds.width)
+//                    cell.postImageView.image = resizedImage
+//                    cell.postImageHeightConstraint.constant = resizedImage.size.height
+
+//                    let imageViewWidth = cell.postImageView.bounds.width
+//                    let imageViewHeight = cell.postImageView.bounds.height
+//                    let widthScaleFactor = imageViewWidth / image.size.width
+//                    let heightScaleFactor = imageViewHeight / image.size.height
+//                    if(widthScaleFactor > heightScaleFactor) {
+//                        newSize = CGSizeMake(size.width * heightRatio, size.height * heightRatio)
+//                    } else {
+//                        newSize = CGSizeMake(size.width * widthRatio,  size.height * widthRatio)
+//                    }
+//                    
+//
+//                    let scaleFactor = widthScaleFactor > heightScaleFactor ? heightScaleFactor : widthScaleFactor
+//                    cell.postImageHeightConstraint.constant = image.size.height * scaleFactor
+//                }
+//            }
+            
 //            cell.postImageView.setImageWith(imageURL)
 //            var urlRequestForImage = URLRequest(url: imageURL)
 //            //[request addValue:@"image/*" forHTTPHeaderField:@"Accept"]

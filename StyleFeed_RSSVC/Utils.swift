@@ -94,3 +94,18 @@ func MD5(string: String) -> Data {
     
     return digestData
 }
+
+// Resizes an image to fit a target width
+func resizeImage(image: UIImage, toFitWidth targetWidth: CGFloat) -> UIImage {
+
+    let size = image.size
+    let widthRatio  = targetWidth  / size.width
+    let newSize = CGSize(width: size.width * widthRatio,
+                         height: size.height * widthRatio)
+    let rect = CGRect(origin: CGPoint.zero, size: newSize)
+    UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+    image.draw(in: rect)
+    let newImage = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    return newImage!
+}

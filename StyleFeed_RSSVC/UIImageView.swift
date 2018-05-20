@@ -11,15 +11,22 @@ import Kingfisher
 
 extension UIImageView {
     
-    func download(url: URL?, indicator: Bool = true, placeholder: UIImage? = nil) {
+    func download(url: URL?,
+                  indicator: Bool = true,
+                  placeholder: UIImage? = nil,
+                  kingfisherOptions: KingfisherOptionsInfo? = [.transition(.fade(0.2))],
+                  completionHandler: CompletionHandler? = nil) {
         guard let url = url else {
             return
         }
         self.kf.indicatorType = indicator ? .activity : .none
         self.kf.setImage(with: url,
                          placeholder: placeholder,
-                         options: [.transition(.fade(0.2))])
+                         options: kingfisherOptions,
+                         progressBlock: nil,
+                         completionHandler: completionHandler)
     }
+
     
     func loadProductImage (fromFilename fileName: String?) {
         if let fileName = fileName {

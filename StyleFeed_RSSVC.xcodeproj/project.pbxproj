@@ -135,13 +135,13 @@
 				F69CDE3B20AD339F00474B4B /* LaunchScreen.storyboard */,
 				F69CDE3620AD339F00474B4B /* Main.storyboard */,
 				F658171F20AD482F004969A5 /* RSSFeedPostWithImageTableCell.swift */,
-				F6A3F24620B099BF008D75C3 /* UIImageView.swift */,
 				F658172120AD4BC2004969A5 /* RSSFeeds.swift */,
-				F69CDE3420AD339F00474B4B /* StyleFeed_RSSVC.swift */,
-				F658172320AD4C2A004969A5 /* WebService.swift */,
-				F6C3B6E020ADF7570006441B /* WebPageViewerViewController.swift */,
-				F6C3B6E220AE07150006441B /* Utils.swift */,
 				F6C3B70820AF62F60006441B /* StyleFeed_RSSVC-Bridging-Header.h */,
+				F69CDE3420AD339F00474B4B /* StyleFeed_RSSVC.swift */,
+				F6A3F24620B099BF008D75C3 /* UIImageView.swift */,
+				F6C3B6E220AE07150006441B /* Utils.swift */,
+				F6C3B6E020ADF7570006441B /* WebPageViewerViewController.swift */,
+				F658172320AD4C2A004969A5 /* WebService.swift */,
 			);
 			path = StyleFeed_RSSVC;
 			sourceTree = "<group>";
