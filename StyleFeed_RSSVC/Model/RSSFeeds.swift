@@ -1,10 +1,6 @@
-//
 //  RSSFeeds.swift
-//  Couture Lane
-//
 //  Created by Greg Anderson on 5/16/18.
-//  Copyright © 2018 Couture Lane. All rights reserved.
-//
+//  Copyright © 2018 PlanetBeagle. All rights reserved.
 
 import Foundation
 import FeedKit
@@ -86,11 +82,11 @@ class RSSFeeds {
     private var feedPosts = [Int : [RSSFeedPost]]()
     
     // A dispatch queue to fetch feeds on background thread(s)
-    let feedReadQueue = DispatchQueue(label: "com.couturelane.feedReadQueue",
+    let feedReadQueue = DispatchQueue(label: "com.planetbeagle.feedReadQueue",
                                       qos: DispatchQoS.userInteractive)
     
     // DEBUG: Set to true to get some logging
-    var DEBUG = false
+    var DEBUG = true
     private func DEBUG_LOG(_ s: String) { if DEBUG { NSLog("\(s)\n") } }
     
     // MARK: Public interface
@@ -110,24 +106,84 @@ class RSSFeeds {
     public func updateFeedsFromRSS (viewForProgressHUD view: UIView?,
                                     afterEachFeedIsRead callback: FeedLoadCompletion?) {
         DEBUG_LOG ("updateFeedsFromRSS: Starting")
+        
+        // Normally the list of RSS feeds would come from a server.  Here I'm
+        // I've just hard-coded some.
+        
         self.addOrUpdateAFeed(
             RSSFeedInfo(id: 1,
                         name: "Elle Fashion",
                         url: URL(string: "https://www.elle.com/rss/fashion.xml")!,
                         type: "rss",
-                        logoURLString: nil))
+                        logoURLString: "https://planetbeagle.com/fashionLogos/elle-logo.png"))
         self.addOrUpdateAFeed(
             RSSFeedInfo(id: 2,
                     name: "Vogue",
                     url: URL(string: "https://www.vogue.com/feed/rss")!,
                     type: "rss",
-                    logoURLString: nil))
+                    logoURLString: "https://planetbeagle.com/fashionLogos/vogue-logo.png"))
         self.addOrUpdateAFeed(
             RSSFeedInfo(id: 3,
                         name: "WhoWhatWear",
                         url: URL(string: "https://www.whowhatwear.com/rss")!,
                         type: "rss",
-                        logoURLString: nil))
+                        logoURLString: "https://planetbeagle.com/fashionLogos/who-what-wear-logo.jpg"))
+        self.addOrUpdateAFeed(
+            RSSFeedInfo(id: 4,
+                        name: "Refinery 29",
+                        url: URL(string: "https://www.refinery29.com/fashion/rss.xml")!,
+                        type: "rss",
+                        logoURLString: "https://planetbeagle.com/fashionLogos/R29-logo.png"))
+        self.addOrUpdateAFeed(
+            RSSFeedInfo(id: 5,
+                        name: "GQ",
+                        url: URL(string: "https://www.gq.com/feed/style/rss")!,
+                        type: "rss",
+                        logoURLString: "https://planetbeagle.com/fashionLogos/GQ-logo.png"))
+        self.addOrUpdateAFeed(
+            RSSFeedInfo(id: 6,
+                        name: "POPSUGAR",
+                        url: URL(string: "https://www.popsugar.com/fashion/feed")!,
+                        type: "rss",
+                        logoURLString: "https://planetbeagle.com/fashionLogos/popsugar-logo.png"))
+        self.addOrUpdateAFeed(
+            RSSFeedInfo(id: 7,
+                        name: "The Atlantic-Pacific",
+                        url: URL(string: "https://the-atlantic-pacific.com/feed")!,
+                        type: "rss",
+                        logoURLString: "https://planetbeagle.com/fashionLogos/atlantic-pacific-logo.png"))
+        self.addOrUpdateAFeed(
+            RSSFeedInfo(id: 8,
+                        name: "The New York Times",
+                        url: URL(string: "https://rss.nytimes.com/services/xml/rss/nyt/FashionandStyle.xml")!,
+                        type: "rss",
+                        logoURLString: "https://planetbeagle.com/fashionLogos/new-york-times-logo.jpg"))
+        self.addOrUpdateAFeed(
+            RSSFeedInfo(id: 9,
+                        name: "The Editorialist",
+                        url: URL(string: "https://editorialist.com/feed")!,
+                        type: "rss",
+                        logoURLString: "https://planetbeagle.com/fashionLogos/editorialist-logo.png"))
+        self.addOrUpdateAFeed(
+            RSSFeedInfo(id: 10,
+                        name: "Fashionista",
+                        url: URL(string: "https://fashionista.com/.rss/excerpt/")!,
+                        type: "rss",
+                        logoURLString: "https://planetbeagle.com/fashionLogos/fashionista-logo.png"))
+        self.addOrUpdateAFeed(
+            RSSFeedInfo(id: 11,
+                        name: "Fashion Gone Rogue",
+                        url: URL(string: "https://fashiongonerogue.com/feed")!,
+                        type: "rss",
+                        logoURLString: "https://planetbeagle.com/fashionLogos/fashiongonerogue-logo.png"))
+        self.addOrUpdateAFeed(
+            RSSFeedInfo(id: 12,
+                        name: "Cliche Magazine",
+                        url: URL(string: "https://clichemag.com/feed")!,
+                        type: "rss",
+                        logoURLString: "https://planetbeagle.com/fashionLogos/clichemagazine-logo.png"))
+
+        // Start reading RSS feeds
         self.feedReadQueue.async {
             self.readAllFeeds(afterEachFeedIsRead: callback)
         }
@@ -384,7 +440,7 @@ class RSSFeeds {
                                    "image/png",
                                    "image/gif"
         ]
-        return !(allowableImageTypes.index(of: type) == nil)
+        return !(allowableImageTypes.firstIndex(of: type) == nil)
     }
     
     // Make a new aggregated feed, and also build an array of post insertions which will
@@ -411,8 +467,8 @@ class RSSFeeds {
         for (index, post) in currentFeed.enumerated() {
             if post.feedId == feedId {
                 // Does this post still exist in the new aggregated feed?
-                let postIndex = newAggregatedFeed.index(
-                                    where: { $0.uniqueHash == post.uniqueHash })
+                let postIndex = newAggregatedFeed.firstIndex(
+                                                  where: { $0.uniqueHash == post.uniqueHash })
                 if postIndex == nil { // This post was deleted
                     indicesOfDeletedPosts.append(index)
                 }

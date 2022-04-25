@@ -81,6 +81,40 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		372062FF2816DD3100B24D99 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				F69CDE3420AD339F00474B4B /* StyleFeed_RSSVC.swift */,
+				F658171F20AD482F004969A5 /* RSSFeedPostWithImageTableCell.swift */,
+				F6C3B6E020ADF7570006441B /* WebPageViewerViewController.swift */,
+				F69CDE3620AD339F00474B4B /* Main.storyboard */,
+				F69CDE3B20AD339F00474B4B /* LaunchScreen.storyboard */,
+				F658170C20AD414D004969A5 /* Geomanist Fonts */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		372063002816DD7A00B24D99 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				F69CDE3920AD339F00474B4B /* Assets.xcassets */,
+				F69CDE3E20AD339F00474B4B /* Info.plist */,
+				F658172520AD4C38004969A5 /* AppAttributes.swift */,
+				F69CDE3220AD339F00474B4B /* AppDelegate.swift */,
+				F6C3B70820AF62F60006441B /* StyleFeed_RSSVC-Bridging-Header.h */,
+				F6C3B6E220AE07150006441B /* Utils.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		372063012816DD9800B24D99 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F658172120AD4BC2004969A5 /* RSSFeeds.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		743865F72942B242960EA740 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -127,19 +161,9 @@
 		F69CDE3120AD339F00474B4B /* StyleFeed_RSSVC */ = {
 			isa = PBXGroup;
 			children = (
-				F658172520AD4C38004969A5 /* AppAttributes.swift */,
-				F69CDE3220AD339F00474B4B /* AppDelegate.swift */,
-				F69CDE3920AD339F00474B4B /* Assets.xcassets */,
-				F658170C20AD414D004969A5 /* Geomanist Fonts */,
-				F69CDE3E20AD339F00474B4B /* Info.plist */,
-				F69CDE3B20AD339F00474B4B /* LaunchScreen.storyboard */,
-				F69CDE3620AD339F00474B4B /* Main.storyboard */,
-				F658171F20AD482F004969A5 /* RSSFeedPostWithImageTableCell.swift */,
-				F658172120AD4BC2004969A5 /* RSSFeeds.swift */,
-				F6C3B70820AF62F60006441B /* StyleFeed_RSSVC-Bridging-Header.h */,
-				F69CDE3420AD339F00474B4B /* StyleFeed_RSSVC.swift */,
-				F6C3B6E220AE07150006441B /* Utils.swift */,
-				F6C3B6E020ADF7570006441B /* WebPageViewerViewController.swift */,
+				372063002816DD7A00B24D99 /* App */,
+				372063012816DD9800B24D99 /* Model */,
+				372062FF2816DD3100B24D99 /* UI */,
 			);
 			path = StyleFeed_RSSVC;
 			sourceTree = "<group>";
@@ -173,7 +197,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 1330;
 				ORGANIZATIONNAME = "Planet Beagle";
 				TargetAttributes = {
 					F69CDE2E20AD339F00474B4B = {
@@ -233,13 +257,11 @@
 				"${PODS_ROOT}/Target Support Files/Pods-StyleFeed_RSSVC/Pods-StyleFeed_RSSVC-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/FeedKit/FeedKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FeedKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -317,6 +339,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -324,8 +347,10 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -351,7 +376,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -374,6 +399,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -381,8 +407,10 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -402,7 +430,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -418,12 +446,12 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9DAT7A9Z28;
-				INFOPLIST_FILE = StyleFeed_RSSVC/Info.plist;
+				INFOPLIST_FILE = StyleFeed_RSSVC/App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.planetbeagle.StyleFeed-RSSVC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "StyleFeed_RSSVC/StyleFeed_RSSVC-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "StyleFeed_RSSVC/App/StyleFeed_RSSVC-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -438,12 +466,12 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9DAT7A9Z28;
-				INFOPLIST_FILE = StyleFeed_RSSVC/Info.plist;
+				INFOPLIST_FILE = StyleFeed_RSSVC/App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.planetbeagle.StyleFeed-RSSVC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "StyleFeed_RSSVC/StyleFeed_RSSVC-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "StyleFeed_RSSVC/App/StyleFeed_RSSVC-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

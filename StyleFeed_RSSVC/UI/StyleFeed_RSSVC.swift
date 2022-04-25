@@ -1,10 +1,6 @@
-//
 //  StyleFeed_RSSVC.swift
-//  Couture Lane
-//
 //  Created by Greg Anderson on 5/16/18.
-//  Copyright © 2018 Couture Lane. All rights reserved.
-//
+//  Copyright © 2018 PlanetBeagle. All rights reserved.
 
 import UIKit
 import Kingfisher
@@ -96,13 +92,15 @@ class StyleFeed_RSSVC: UIViewController {
         guard expectedTotalRowCount == feedPostsTableView.numberOfRows(inSection: 0) else {
             DEBUG_LOG("updateFeedPostsTableView: returning because: Haven't yet finished the previous row updates.  Feed id updating now = \(feedIdUpdatingNow), expectedTotalRowCount: \(expectedTotalRowCount) feedPostsTableView.numberOfRows: \(feedPostsTableView.numberOfRows(inSection: 0))")
             return
-
         }
-        // This SHOULD work, but doesn't
+        // TODO:  This SHOULD work, but doesn't
 //        guard !feedTableUpdateInProgress  else {
 //            DEBUG_LOG("updateFeedPostsTableView: returning because feedTableUpdateInProgress.  Feed id updating now = \(feedIdUpdatingNow)")
 //            return
 //        }
+        if feedTableUpdateInProgress {
+            DEBUG_LOG("updateFeedPostsTableView: feedTableUpdateInProgress is true!.  Feed id updating now = \(feedIdUpdatingNow)")
+        }
         
         feedTableUpdateInProgress = true
 
@@ -130,13 +128,19 @@ class StyleFeed_RSSVC: UIViewController {
             self.feedPostsTableView.insertRows(at: feedUpdate.indexPathsOfNewPosts,
                                                with: .top)
             },
+                                                     
+            // TODO:
             // When the tableview is scrolled, this completion block may not be executed.
             // Maybe that's because this block is only called at the end of the ANIMATIONS,
             // not the insert/delete operations, AND perhaps scrolling may cancel the new
             // Animations created by the performBatchUpdates function???
             
-            // It's worse than that.  When scrolling, the deleteRows/insertRows never
-            // get executed.
+            // Worse than that, when scrolling, the deleteRows/insertRows never
+            // get executed.  This causes a later exception that the # of rows in the table
+            // after batch updates isn't consistent with the number beforehand.
+                                                     
+            // To reproduce the crash, start the app and then immediately start scrolling
+            // the tableview down, quickly.
             completion: { (success) in
                 self.DEBUG_LOG("updateFeedPostsTableView: feedPostsTableView.performBatchUpdates completion for feed: \(feedUpdate.feedId) success = \(success) # of table rows: \(self.feedPostsTableView.numberOfRows(inSection: 0))")
                 self.feedTableUpdateInProgress = false
@@ -170,31 +174,6 @@ class StyleFeed_RSSVC: UIViewController {
         }
     }
 }
-
-/*
-extension StyleFeed_RSSVC: UIScrollViewDelegate {
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        NSLog ("scrollViewDidEndDragging")
-    }
-
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        NSLog ("scrollViewDidEndScrollingAnimation")
-    }
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        NSLog ("scrollViewDidEndDecelerating")
-    }
-    
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        NSLog ("scrollViewWillEndDragging")
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        NSLog ("scrollViewDidScroll")
-    }
-}
- */
 
 extension StyleFeed_RSSVC: UITableViewDelegate, UITableViewDataSource {
     

@@ -1,9 +1,6 @@
-//
 //  Utils.swift
-//  StyleFeed_RSSVC
-//
 //  Created by Greg Anderson on 5/17/18.
-//  Copyright © 2018 Couture Lane. All rights reserved.
+//  Copyright © 2018 PlanetBeagle. All rights reserved.
 //
 
 import UIKit

@@ -1,7 +1,4 @@
-//
 //  AppDelegate.swift
-//  TableViewVariableHeight
-//
 //  Created by Greg Anderson on 5/16/18.
 //  Copyright © 2018 Planet Beagle. All rights reserved.
 //

@@ -1,9 +1,6 @@
-//
 //  RSSFeedPostWithImageTableCell.swift
-//  Couture Lane
-//
 //  Created by Greg Anderson on 5/17/18.
-//  Copyright © 2018 Couture Lane. All rights reserved.
+//  Copyright © 2018 PlanetBeagle. All rights reserved.
 //
 
 import UIKit
@@ -44,20 +41,20 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
     override func layoutIfNeeded() {
         super.layoutIfNeeded()
         postImageViewWidth = postImageView.bounds.width
-        DEBUG_LOG ("RSSFeedPostWithImageTableCell: AFTER layoutIfNeeded \(postTitleLabel.text ?? "---") \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight) Post image VIEW bounds: \(String(describing: postImageView?.bounds))")
+        DEBUG_LOG ("RSSFeedPostWithImageTableCell: AFTER layoutIfNeeded \(postTitleLabel.text ?? "---") \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight) Post image VIEW bounds: \(postImageView.bounds)")
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         postImageViewWidth = postImageView.bounds.width
-        DEBUG_LOG ("RSSFeedPostWithImageTableCell: AFTER layoutSubviews \(postTitleLabel.text ?? "---") \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight) Post image VIEW bounds: \(postImageView?.bounds)")
+        DEBUG_LOG ("RSSFeedPostWithImageTableCell: AFTER layoutSubviews \(postTitleLabel.text ?? "---") \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight) Post image VIEW bounds: \(postImageView.bounds)")
     }
     
     override func updateConstraints() {
-        DEBUG_LOG ("RSSFeedPostWithImageTableCell: updateConstraints \(postTitleLabel.text ?? "---") \(self.description) setting height constraing to Post image height: \(postImageHeight) Post image VIEW bounds: \(postImageView?.bounds)")
+        DEBUG_LOG ("RSSFeedPostWithImageTableCell: updateConstraints \(postTitleLabel.text ?? "---") \(self.description) setting height constraing to Post image height: \(postImageHeight) Post image VIEW bounds: \(postImageView.bounds)")
         super.updateConstraints()
         postImageViewWidth = postImageView.bounds.width
-        DEBUG_LOG ("RSSFeedPostWithImageTableCell: AFTER updateConstraints \(postTitleLabel.text ?? "---") \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight) Post image VIEW bounds: \(postImageView?.bounds)")
+        DEBUG_LOG ("RSSFeedPostWithImageTableCell: AFTER updateConstraints \(postTitleLabel.text ?? "---") \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight) Post image VIEW bounds: \(postImageView.bounds)")
     }
     
     override func draw(_ rect: CGRect) {
@@ -89,7 +86,6 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
         containerView.layer.shadowRadius = 3.0
         
         DEBUG_LOG ("RSSFeedPostWithImageTableCell: awakeFromNib END \(postTitleLabel.text ?? "---") \(self.description) postImageViewWidth: \(postImageViewWidth)")
-
     }
     
     override func prepareForReuse() {
@@ -111,12 +107,7 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
         postImageView.kf.setImage(with: imageURL,
                          placeholder: nil,
                          options: kingfisherImageLoadingOptions,
-                         progressBlock: nil) {
-//                (_ image: Image?, _ error: NSError?,
-//                 _ cacheType: CacheType, _ imageURL: URL?) in
-            
-                    result in
-            
+                         progressBlock: nil) { result in
             switch result {
             case .failure :
                 self.postImageView.image = nil
@@ -124,19 +115,13 @@ class RSSFeedPostWithImageTableCell : UITableViewCell {
             case .success(let imageResult) :
                 self.postImageWidth = imageResult.image.size.width
                 self.postImageHeight = imageResult.image.size.height
+                // Reload the table row with the newly loaded image
+                if self.tableView.cellForRow(at: self.indexPath) != nil {
+                    self.DEBUG_LOG ("RSSFeedPostWithImageTableCell: WITHIN setPostImage calling tableView.reloadRows \(self.postTitleLabel.text ?? "---") \(self.description) Post image width: \(self.postImageWidth) Post image height: \(self.postImageHeight)")
 
-                // TODO: THIS HORRIBLE HACK IS NOT GOING TO WORK FOREVER.
-                // Instead maybe send a notification to the tableview object,
-                // which would then decide whether to reload the row?
-                
-                // Looks like maybe iOS 15 (or earlier) has fixed this for us.
-                
-//                if self.tableView.cellForRow(at: self.indexPath) != nil {
-//                    self.DEBUG_LOG ("RSSFeedPostWithImageTableCell: WITHIN setPostImage calling tableView.reloadRows \(self.postTitleLabel.text ?? "---") \(self.description) Post image width: \(self.postImageWidth) Post image height: \(self.postImageHeight)")
-//
-//                    self.tableView.reloadRows(at: [self.indexPath],
-//                                              with: .middle)
-//                }
+                    self.tableView.reloadRows(at: [self.indexPath],
+                                              with: .middle)
+                }
                 self.DEBUG_LOG ("RSSFeedPostWithImageTableCell: setPostImage CALLBACK \(self.postTitleLabel.text ?? "---") \(self.description) Post image width: \(self.postImageWidth) Post image height: \(self.postImageHeight) postImageView bounds: \(self.postImageView.bounds)")
             }
         }
@@ -159,26 +144,12 @@ extension RSSFeedPostWithImageTableCell: ImageProcessor {
             }
             else { return nil }
         }
-
     }
     
     var identifier: String {
-        return "com.CoutureLane.RSSFeedPostWithImageTableCell.ImageResizer"
+        return "com.PlanetBeagle.RSSFeedPostWithImageTableCell.ImageResizer"
     }
-    
-//    func process(item: ImageProcessItem, options: KingfisherOptionsInfo) -> UIImage? {
-//        DEBUG_LOG ("RSSFeedPostWithImageTableCell: process \(self.description) Post image width: \(postImageWidth) Post image height: \(postImageHeight)")
-//        switch item {
-//        case .image(let uiImage):
-//            return resizePostFeedImage(fromImage: uiImage)
-//        case .data(let imageData):
-//            if let uiImage = UIImage(data: imageData) {
-//                return resizePostFeedImage(fromImage: uiImage)
-//            }
-//            else { return nil }
-//        }
-//    }
-    
+        
     func resizePostFeedImage(fromImage image: UIImage) -> UIImage {
         DEBUG_LOG ("RSSFeedPostWithImageTableCell: resizePostFeedImage Post image view width: \(postImageViewWidth) Post image width: \(postImageWidth) Post image height: \(postImageHeight)")
         
