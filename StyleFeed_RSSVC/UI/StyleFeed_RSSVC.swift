@@ -87,7 +87,7 @@ class StyleFeed_RSSVC: UIViewController {
 
         guard feedUpdateQueue.count > 0 else { return }
         
-        // This hack doesn't help!  Not only is the completion block not being called,
+        // TODO: This hack doesn't help!  Not only is the completion block not being called,
         // the new rows are not being inserted!
         guard expectedTotalRowCount == feedPostsTableView.numberOfRows(inSection: 0) else {
             DEBUG_LOG("updateFeedPostsTableView: returning because: Haven't yet finished the previous row updates.  Feed id updating now = \(feedIdUpdatingNow), expectedTotalRowCount: \(expectedTotalRowCount) feedPostsTableView.numberOfRows: \(feedPostsTableView.numberOfRows(inSection: 0))")
@@ -133,10 +133,10 @@ class StyleFeed_RSSVC: UIViewController {
             // When the tableview is scrolled, this completion block may not be executed.
             // Maybe that's because this block is only called at the end of the ANIMATIONS,
             // not the insert/delete operations, AND perhaps scrolling may cancel the new
-            // Animations created by the performBatchUpdates function???
+            // animations created by the performBatchUpdates function?
             
             // Worse than that, when scrolling, the deleteRows/insertRows never
-            // get executed.  This causes a later exception that the # of rows in the table
+            // get executed.  This causes a later exception, that the # of rows in the table
             // after batch updates isn't consistent with the number beforehand.
                                                      
             // To reproduce the crash, start the app and then immediately start scrolling
@@ -159,6 +159,7 @@ class StyleFeed_RSSVC: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
+    // Handle taps on an RSS post, and launch the article in a web view.
     override func shouldPerformSegue(withIdentifier identifier: String,
                                      sender: Any?) -> Bool {
         if let cell = sender as? RSSFeedPostWithImageTableCell,
