@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		375CDA412816255D00E30868 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 375CDA402816255D00E30868 /* WebKit.framework */; };
 		74C241D3D7B1A1036613BA3F /* Pods_StyleFeed_RSSVC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B011B04891A1AECC486AFFBE /* Pods_StyleFeed_RSSVC.framework */; };
 		F658171620AD414D004969A5 /* Geomanist-Ultra.otf in Resources */ = {isa = PBXBuildFile; fileRef = F658170D20AD414D004969A5 /* Geomanist-Ultra.otf */; };
 		F658171720AD414D004969A5 /* Geomanist-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = F658170E20AD414D004969A5 /* Geomanist-Light.otf */; };
@@ -19,19 +20,18 @@
 		F658171E20AD414D004969A5 /* Geomanist-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = F658171520AD414D004969A5 /* Geomanist-Thin.otf */; };
 		F658172020AD482F004969A5 /* RSSFeedPostWithImageTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F658171F20AD482F004969A5 /* RSSFeedPostWithImageTableCell.swift */; };
 		F658172220AD4BC2004969A5 /* RSSFeeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = F658172120AD4BC2004969A5 /* RSSFeeds.swift */; };
-		F658172420AD4C2A004969A5 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F658172320AD4C2A004969A5 /* WebService.swift */; };
 		F658172620AD4C38004969A5 /* AppAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F658172520AD4C38004969A5 /* AppAttributes.swift */; };
 		F69CDE3320AD339F00474B4B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69CDE3220AD339F00474B4B /* AppDelegate.swift */; };
 		F69CDE3520AD339F00474B4B /* StyleFeed_RSSVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69CDE3420AD339F00474B4B /* StyleFeed_RSSVC.swift */; };
 		F69CDE3820AD339F00474B4B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F69CDE3620AD339F00474B4B /* Main.storyboard */; };
 		F69CDE3A20AD339F00474B4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F69CDE3920AD339F00474B4B /* Assets.xcassets */; };
 		F69CDE3D20AD339F00474B4B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F69CDE3B20AD339F00474B4B /* LaunchScreen.storyboard */; };
-		F6A3F24720B099BF008D75C3 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A3F24620B099BF008D75C3 /* UIImageView.swift */; };
 		F6C3B6E120ADF7570006441B /* WebPageViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C3B6E020ADF7570006441B /* WebPageViewerViewController.swift */; };
 		F6C3B6E320AE07150006441B /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C3B6E220AE07150006441B /* Utils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		375CDA402816255D00E30868 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		99C87ECEFFF0293B172CBB1C /* Pods-StyleFeed_RSSVC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StyleFeed_RSSVC.debug.xcconfig"; path = "Pods/Target Support Files/Pods-StyleFeed_RSSVC/Pods-StyleFeed_RSSVC.debug.xcconfig"; sourceTree = "<group>"; };
 		ACBE3EDC05165D89E41F5FC7 /* Pods-StyleFeed_RSSVC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StyleFeed_RSSVC.release.xcconfig"; path = "Pods/Target Support Files/Pods-StyleFeed_RSSVC/Pods-StyleFeed_RSSVC.release.xcconfig"; sourceTree = "<group>"; };
 		B011B04891A1AECC486AFFBE /* Pods_StyleFeed_RSSVC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StyleFeed_RSSVC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,7 +46,6 @@
 		F658171520AD414D004969A5 /* Geomanist-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Geomanist-Thin.otf"; sourceTree = "<group>"; };
 		F658171F20AD482F004969A5 /* RSSFeedPostWithImageTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSFeedPostWithImageTableCell.swift; sourceTree = "<group>"; };
 		F658172120AD4BC2004969A5 /* RSSFeeds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSSFeeds.swift; sourceTree = "<group>"; };
-		F658172320AD4C2A004969A5 /* WebService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		F658172520AD4C38004969A5 /* AppAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppAttributes.swift; sourceTree = "<group>"; };
 		F69CDE2F20AD339F00474B4B /* StyleFeed_RSSVC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StyleFeed_RSSVC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F69CDE3220AD339F00474B4B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -55,7 +54,6 @@
 		F69CDE3920AD339F00474B4B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F69CDE3C20AD339F00474B4B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F69CDE3E20AD339F00474B4B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F6A3F24620B099BF008D75C3 /* UIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		F6C3B6E020ADF7570006441B /* WebPageViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebPageViewerViewController.swift; sourceTree = "<group>"; };
 		F6C3B6E220AE07150006441B /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		F6C3B70820AF62F60006441B /* StyleFeed_RSSVC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "StyleFeed_RSSVC-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -66,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				375CDA412816255D00E30868 /* WebKit.framework in Frameworks */,
 				74C241D3D7B1A1036613BA3F /* Pods_StyleFeed_RSSVC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -85,6 +84,7 @@
 		743865F72942B242960EA740 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				375CDA402816255D00E30868 /* WebKit.framework */,
 				B011B04891A1AECC486AFFBE /* Pods_StyleFeed_RSSVC.framework */,
 			);
 			name = Frameworks;
@@ -138,10 +138,8 @@
 				F658172120AD4BC2004969A5 /* RSSFeeds.swift */,
 				F6C3B70820AF62F60006441B /* StyleFeed_RSSVC-Bridging-Header.h */,
 				F69CDE3420AD339F00474B4B /* StyleFeed_RSSVC.swift */,
-				F6A3F24620B099BF008D75C3 /* UIImageView.swift */,
 				F6C3B6E220AE07150006441B /* Utils.swift */,
 				F6C3B6E020ADF7570006441B /* WebPageViewerViewController.swift */,
-				F658172320AD4C2A004969A5 /* WebService.swift */,
 			);
 			path = StyleFeed_RSSVC;
 			sourceTree = "<group>";
@@ -158,7 +156,6 @@
 				F69CDE2C20AD339F00474B4B /* Frameworks */,
 				F69CDE2D20AD339F00474B4B /* Resources */,
 				7859433A40891A40D9CB69D3 /* [CP] Embed Pods Frameworks */,
-				3921945AA409B3F039C4E651 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -181,7 +178,7 @@
 				TargetAttributes = {
 					F69CDE2E20AD339F00474B4B = {
 						CreatedOnToolsVersion = 9.2;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1330;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -227,45 +224,26 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3921945AA409B3F039C4E651 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-StyleFeed_RSSVC/Pods-StyleFeed_RSSVC-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		7859433A40891A40D9CB69D3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-StyleFeed_RSSVC/Pods-StyleFeed_RSSVC-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-StyleFeed_RSSVC/Pods-StyleFeed_RSSVC-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/FeedKit/FeedKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
-				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FeedKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-StyleFeed_RSSVC/Pods-StyleFeed_RSSVC-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StyleFeed_RSSVC/Pods-StyleFeed_RSSVC-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E81FD96F2E2FA97CAD9E32FF /* [CP] Check Pods Manifest.lock */ = {
@@ -297,9 +275,7 @@
 				F658172220AD4BC2004969A5 /* RSSFeeds.swift in Sources */,
 				F658172020AD482F004969A5 /* RSSFeedPostWithImageTableCell.swift in Sources */,
 				F69CDE3520AD339F00474B4B /* StyleFeed_RSSVC.swift in Sources */,
-				F658172420AD4C2A004969A5 /* WebService.swift in Sources */,
 				F6C3B6E120ADF7570006441B /* WebPageViewerViewController.swift in Sources */,
-				F6A3F24720B099BF008D75C3 /* UIImageView.swift in Sources */,
 				F69CDE3320AD339F00474B4B /* AppDelegate.swift in Sources */,
 				F6C3B6E320AE07150006441B /* Utils.swift in Sources */,
 			);
@@ -443,12 +419,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9DAT7A9Z28;
 				INFOPLIST_FILE = StyleFeed_RSSVC/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.planetbeagle.StyleFeed-RSSVC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "StyleFeed_RSSVC/StyleFeed_RSSVC-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -462,11 +439,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9DAT7A9Z28;
 				INFOPLIST_FILE = StyleFeed_RSSVC/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.planetbeagle.StyleFeed-RSSVC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "StyleFeed_RSSVC/StyleFeed_RSSVC-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="okU-z7-cRd">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="okU-z7-cRd">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,11 +22,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mpv-a4-gc9">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="RSSFeedPostCellWithImage" rowHeight="402" id="k17-2a-xRL" customClass="RSSFeedPostWithImageTableCell" customModule="StyleFeed_RSSVC" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="402"/>
+                                        <rect key="frame" x="0.0" y="44.5" width="375" height="402"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="k17-2a-xRL" id="skF-at-DL8">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="402"/>
@@ -54,14 +52,14 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="samplepic2" translatesAutoresizingMaskIntoConstraints="NO" id="hYh-R4-8uN" userLabel="Post Image View">
-                                                            <rect key="frame" x="0.0" y="50" width="355" height="281"/>
+                                                            <rect key="frame" x="0.0" y="50" width="355" height="277.5"/>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSf-Wj-7Tb" userLabel="Post Title Label">
-                                                            <rect key="frame" x="12" y="346" width="294" height="18"/>
+                                                            <rect key="frame" x="12" y="342.5" width="294" height="21.5"/>
                                                             <attributedString key="attributedText">
                                                                 <fragment content="Post Title">
                                                                     <attributes>
-                                                                        <font key="NSFont" size="18" name="Geomanist-Regular"/>
+                                                                        <font key="NSFont" metaFont="system" size="18"/>
                                                                         <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                                     </attributes>
                                                                 </fragment>
@@ -124,6 +122,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="mpv-a4-gc9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="dfW-nz-4pP"/>
@@ -131,7 +130,6 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="mpv-a4-gc9" secondAttribute="trailing" id="fcF-97-HBY"/>
                             <constraint firstItem="mpv-a4-gc9" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="uGQ-fI-QLg"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Fashion &amp; Beauty" id="cmc-Wd-y5I"/>
                     <connections>
@@ -151,7 +149,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wM9-ys-e2a">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <color key="backgroundColor" red="0.83137254900000002" green="0.83137254900000002" blue="0.83137254900000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <dataDetectorTypes key="dataDetectorTypes" none="YES"/>
@@ -160,6 +158,7 @@
                                 </wkWebViewConfiguration>
                             </wkWebView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="1Rx-ra-7cN"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="1Rx-ra-7cN" firstAttribute="trailing" secondItem="wM9-ys-e2a" secondAttribute="trailing" id="K22-7O-SrF"/>
@@ -167,7 +166,6 @@
                             <constraint firstItem="wM9-ys-e2a" firstAttribute="leading" secondItem="1Rx-ra-7cN" secondAttribute="leading" id="mdA-2g-4o5"/>
                             <constraint firstItem="1Rx-ra-7cN" firstAttribute="bottom" secondItem="wM9-ys-e2a" secondAttribute="bottom" id="tQr-e8-7DL"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="1Rx-ra-7cN"/>
                     </view>
                     <connections>
                         <outlet property="webKitView" destination="wM9-ys-e2a" id="304-xU-5v9"/>
@@ -183,7 +181,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="okU-z7-cRd" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="dnJ-hf-WTL">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -197,7 +195,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="samplepic1" width="344" height="344"/>
+        <image name="samplepic1" width="344.5" height="344.5"/>
         <image name="samplepic2" width="800" height="600"/>
     </resources>
 </document>

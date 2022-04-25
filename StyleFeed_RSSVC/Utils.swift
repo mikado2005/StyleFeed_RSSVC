@@ -57,7 +57,7 @@ extension UILabel {
     }
     
     // TODO: This strips out the HTML and sets the desired font correctly, but
-    // doesn't seem t render HTML tags like <I> or <B>
+    // doesn't seem to render HTML tags like <I> or <B>
     func setHTMLFromString(htmlText: String?, fontFamily: String,
                            fontName: String, fontSize: Float) {
         guard let html = htmlText else {
@@ -73,6 +73,8 @@ extension UILabel {
             return
         }
 
+        // TODO: THIS LINE causes occasional hangs on __psynch_mutexwait
+        // Should it be executed in a background queue?
         self.attributedText = try? NSAttributedString(data: data,
             options: [NSAttributedString.DocumentReadingOptionKey.documentType:
                       NSAttributedString.DocumentType.html],

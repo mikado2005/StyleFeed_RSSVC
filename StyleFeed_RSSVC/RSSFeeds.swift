@@ -8,7 +8,7 @@
 
 import Foundation
 import FeedKit
-import SwiftyJSON
+//import SwiftyJSON
 
 class RSSFeedInfo {
     var id: Int
@@ -75,7 +75,7 @@ class RSSFeedPostSummary {
 
 class RSSFeeds {
     
-    // Our current feed, containing all posts from all feed, sorted by date/time
+    // Our current feed, containing all posts from all feeds, sorted by date/time
     public var aggregatedFeed = [RSSFeedPostSummary]()
     
     // A dictionary relating feed ids to info about each RSS feed
@@ -86,11 +86,12 @@ class RSSFeeds {
     private var feedPosts = [Int : [RSSFeedPost]]()
     
     // A dispatch queue to fetch feeds on background thread(s)
-    let feedReadQueue = DispatchQueue(label: "com.couturelane.feedReadQueue", qos: DispatchQoS.userInteractive)
+    let feedReadQueue = DispatchQueue(label: "com.couturelane.feedReadQueue",
+                                      qos: DispatchQoS.userInteractive)
     
     // DEBUG: Set to true to get some logging
-    let DEBUG = true
-    let FAKE_COUTURE_LANE_SERVER = false
+    var DEBUG = false
+    private func DEBUG_LOG(_ s: String) { if DEBUG { NSLog("\(s)\n") } }
     
     // MARK: Public interface
 
@@ -105,120 +106,85 @@ class RSSFeeds {
                                     _ indicesOfDeletedPosts: [Int],
                                     _ indicesOfInsertedPosts: [Int]) -> Void
 
+    // MAIN external interface function.
     public func updateFeedsFromRSS (viewForProgressHUD view: UIView?,
                                     afterEachFeedIsRead callback: FeedLoadCompletion?) {
-        if DEBUG { NSLog ("updateFeedsFromRSS: Starting") }
-        if FAKE_COUTURE_LANE_SERVER {
-            self.addOrUpdateAFeed(
-                RSSFeedInfo(id: 1,
-                            name: "Elle Fashion",
-                            url: URL(string: "https://www.elle.com/rss/fashion.xml")!,
-                            type: "rss",
-                            logoURLString: nil))
-            self.addOrUpdateAFeed(
-                RSSFeedInfo(id: 2,
-                        name: "Elle Beauty",
-                        url: URL(string: "https://www.elle.com/rss/beauty.xml")!,
+        DEBUG_LOG ("updateFeedsFromRSS: Starting")
+        self.addOrUpdateAFeed(
+            RSSFeedInfo(id: 1,
+                        name: "Elle Fashion",
+                        url: URL(string: "https://www.elle.com/rss/fashion.xml")!,
                         type: "rss",
                         logoURLString: nil))
-            self.feedReadQueue.async {
-                self.readAllFeeds(afterEachFeedIsRead: callback)
-            }
-        }
-        else {
-            getRSSFeedsInfo(viewForProgressHUD: view) {
-                self.fetchAllFeedsInBackground(afterEachFeedIsRead: callback)
-            }
-        }
-    }
-    
-    // MARK: Internal functions
-    
-    // Read the list of current active feeds from our backend API
-    private func getRSSFeedsInfo(viewForProgressHUD view: UIView?,
-                                 completion: @escaping () -> Void) {
-        WebService.shared.call("\(AppAttributes.CoutureLaneURL)/webservices/get_rss_feeds.php",
-            method: .get,
-            parameters: [:],
-            showIndicator: true,
-            inView: view,
-            constructingBodyBlock: nil,
-            completion: { (result) in
-                let json = JSON(result)
-                if let feeds = json["feeds"].array {
-                    for feed in feeds {
-                        // Check each feed for validity
-                        guard feed["is_active"].intValue == 1,
-                            let feedId = feed["id"].int,
-                            let feedName = feed["name"].string,
-                            let feedType = feed["feed_type"].string,
-                            let feedURLString = feed["url"].string,
-                            let feedURL = URL(string: feedURLString) else { continue }
-                        // Add/update this feed in our master list of feeds
-                        self.addOrUpdateAFeed(
-                            RSSFeedInfo(id: feedId,
-                                        name: feedName,
-                                        url: feedURL,
-                                        type: feedType,
-                                        logoURLString: feed["logo_url"].string))
-                    }
-                    completion()
-                }
-        },
-            failure: {(Error) in
-                //TODO:
-                print ("Some appropriate error log here")
-        })
-    }
-    
-    // Begin the process of fetching and parsing all the feeds on a background queue
-    private func fetchAllFeedsInBackground(afterEachFeedIsRead callback: FeedLoadCompletion?) {
-        var bti : UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
-        bti = UIApplication.shared.beginBackgroundTask {
-            UIApplication.shared.endBackgroundTask(bti)
-        }
-        guard bti != UIBackgroundTaskInvalid else { return }
+        self.addOrUpdateAFeed(
+            RSSFeedInfo(id: 2,
+                    name: "Vogue",
+                    url: URL(string: "https://www.vogue.com/feed/rss")!,
+                    type: "rss",
+                    logoURLString: nil))
+        self.addOrUpdateAFeed(
+            RSSFeedInfo(id: 3,
+                        name: "WhoWhatWear",
+                        url: URL(string: "https://www.whowhatwear.com/rss")!,
+                        type: "rss",
+                        logoURLString: nil))
         self.feedReadQueue.async {
             self.readAllFeeds(afterEachFeedIsRead: callback)
         }
     }
     
+    // MARK: Internal functions
+        
+    // Begin the process of fetching and parsing all the feeds on a background queue
+    private func fetchAllFeedsInBackground(afterEachFeedIsRead callback: FeedLoadCompletion?) {
+        // Start a background task; this will allow us to fetch RSS feed in the background
+        // if user switches to another app.
+        var bti : UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier.invalid
+        bti = UIApplication.shared.beginBackgroundTask {
+            UIApplication.shared.endBackgroundTask(bti)
+        }
+        guard bti != UIBackgroundTaskIdentifier.invalid else { return }
+        // Read all of our RSS feed on our background queue
+        self.feedReadQueue.async {
+            self.readAllFeeds(afterEachFeedIsRead: callback)
+        }
+    }
+    
+    // Add an RSS feed to our array of feeds, or update the info of any existing feed
     private func addOrUpdateAFeed(_ newFeed: RSSFeedInfo) {
         // If we already have this feed, update its info
         if let feedToUpdate = feedsInfo[newFeed.id] {
-            if DEBUG { NSLog ("addOrUpdateAFeed: Updating Feed #\(feedToUpdate.id)") }
+            DEBUG_LOG ("addOrUpdateAFeed: Updating Feed #\(feedToUpdate.id)")
             feedToUpdate.logoURL = newFeed.logoURL
             feedToUpdate.name = newFeed.name
             feedToUpdate.type = newFeed.type
             feedToUpdate.URL = newFeed.URL
         }
         else { // This is a new feed
-            // TODO: REMOVE THIS DEBUG IF
-//            if numberOfFeeds < 1 {
                 numberOfFeeds += 1
                 feedsInfo[newFeed.id] = newFeed
                 feedPosts[newFeed.id] = [RSSFeedPost]()
-                if DEBUG { NSLog("addOrUpdateAFeed: Adding Feed #\(newFeed.id)") }
-//            }
+                DEBUG_LOG("addOrUpdateAFeed: Adding Feed #\(newFeed.id)")
         }
     }
     
-    // Update all of the posts in all feeds
+    // Update all of the posts in all feeds.  After each feed is fetched, call the
+    // given callback function.
     private func readAllFeeds(afterEachFeedIsRead callback: FeedLoadCompletion?) {
         for feed in feedsInfo.values {
             guard !feed.isUpdatingNow else { continue }
-            if DEBUG { NSLog ("readAllFeeds: Reading feed #\(feed.id)") }
+            DEBUG_LOG ("readAllFeeds: Reading feed #\(feed.id)")
             readOneFeed(feedId: feed.id) {
                 (newFeedPosts) in
-                // Add our new feed post array to the dictionary of those, update our
-                // aggregated feed, and alert our caller
-//                self.feedPosts[feed.id] = newFeedPosts
-                let (newAggregatedFeed,
-                     indicesOfDeletedPosts,
-                        indicesOfInsertedPosts) = self.updateAggregatedFeed(forFeedId: feed.id, postsForFeed: newFeedPosts)
-                if self.DEBUG { NSLog ("readAllFeeds: Finished feed #\(feed.id)") }
+                // Add our new feed post array to the dictionary of feed post, update our
+                // aggregated posts feed, and alert our caller
+                let (newAggregatedFeed, indicesOfDeletedPosts, indicesOfInsertedPosts) =
+                    self.updateAggregatedFeed(forFeedId: feed.id, postsForFeed: newFeedPosts)
+                self.DEBUG_LOG ("readAllFeeds: Finished feed #\(feed.id)")
+                DispatchQueue.main.async {
                     callback?(feed.id, newAggregatedFeed,
                               indicesOfDeletedPosts, indicesOfInsertedPosts)
+                }
             }
         }
     }
@@ -231,7 +197,8 @@ class RSSFeeds {
         guard let feedInfo = feedsInfo[feedId],
               !feedInfo.isUpdatingNow else { return }
         
-        if DEBUG { NSLog ("readOneFeed: Starting for feed \(feedId)") }
+        DEBUG_LOG ("readOneFeed: Starting for feed \(feedId)")
+        
         // Set the flag to tell us we're pulling this feed
         feedInfo.isUpdatingNow = true
 
@@ -241,36 +208,36 @@ class RSSFeeds {
         // Fetch the feed posts.  These fetches are handled on concurrent dispatch queues,
         // and hence may complete in any order.
         let parser = FeedParser(URL: feedInfo.URL)
-        parser?.parseAsync(queue: DispatchQueue.global(qos: .userInitiated)) {
-            (result) in
-            
-            // Bail out if we didn't receive a valid feed
-            guard result.isSuccess else {
-                print ("RSS feed query failed for feed \(feedInfo.name) \(feedInfo.URL.absoluteString)")
+        parser.parseAsync(queue: DispatchQueue.global(qos: .userInitiated)) {
+            (result) in            
+            switch result {
+            case .failure(let error):
+                print ("RSS feed query failed for feed \(feedInfo.name) \(feedInfo.URL.absoluteString) \(error)")
                 feedInfo.isUpdatingNow = false
                 return
-            }
-            
-            // Process the feed items and add them to the feed posts array
-            if feedInfo.type == "rss" {
-                if let feed = result.rssFeed, let feedItems = feed.items {
-                    for item in feedItems {
-                        if let newPost = self.createRSSFeedPost(feedId: feedId,
-                                                                rssItem: item) {
-                            // TODO: REMOVE THIS DEBUG IF
-//                            if fetchedFeedPosts.count < 30 {
-                                fetchedFeedPosts.append(newPost)
-//                            }
+                
+            case .success(let feed):
+                // Process the feed items and add them to the feed posts array
+                switch feed {
+                case .json: // Not implemented
+                    feedInfo.isUpdatingNow = false
+                    return
+                case let .rss(feed):
+                    if let feedItems = feed.items {
+                        for item in feedItems {
+                            if let newPost = self.createRSSFeedPost(feedId: feedId,
+                                                                    rssItem: item) {
+                                    fetchedFeedPosts.append(newPost)
+                            }
                         }
                     }
-                }
-            }
-            else if feedInfo.type == "atom" {
-                if let feed = result.atomFeed, let feedEntries = feed.entries {
-                    for entry in feedEntries {
-                        if let newPost = self.createAtomFeedPost(feedId: feedId,
-                                                                 atomEntry: entry) {
-                            fetchedFeedPosts.append(newPost)
+                case let .atom(feed):
+                    if let feedEntries = feed.entries {
+                        for entry in feedEntries {
+                            if let newPost = self.createAtomFeedPost(feedId: feedId,
+                                                                     atomEntry: entry) {
+                                fetchedFeedPosts.append(newPost)
+                            }
                         }
                     }
                 }
@@ -279,9 +246,7 @@ class RSSFeeds {
             // Update the feed's info and callback to our caller
             feedInfo.lastRefreshedDate = Date()
             feedInfo.isUpdatingNow = false
-            if self.DEBUG {
-                NSLog ("readOneFeed: Processed feed \(feedId) Read \(fetchedFeedPosts.count) posts")
-            }
+            self.DEBUG_LOG ("readOneFeed: Processed feed \(feedId) Read \(fetchedFeedPosts.count) posts")
             callback(fetchedFeedPosts)
         }
     }
@@ -307,7 +272,7 @@ class RSSFeeds {
                 let postImageURL = URL(string: postImageURLString) {
                 return postImageURL
             }
-            else if  let enclosure = item.enclosure,
+            else if let enclosure = item.enclosure,
                 let postImageURLString = enclosure.attributes?.url,
                 let postImageURL = URL(string: postImageURLString) {
                 return postImageURL
@@ -342,9 +307,10 @@ class RSSFeeds {
             newPost.imageURL = imageURLFromRSSFeedItem(rssItem)
         }
         // Make a unique hash to identify this post
-        let uniqueString = newPost.date!.description + newPost.title! + (newPost.author ?? "")
+        let uniqueString = newPost.date!.description
+                            + newPost.title!
+                            + (newPost.author ?? "")
         newPost.uniqueHash = MD5(string: uniqueString)
-        
         return newPost
     }
 
@@ -377,6 +343,11 @@ class RSSFeeds {
             newPost.URL = postURL
             newPost.imageURL = imageURLFromAtomFeedEntry(atomEntry)
         }
+        // Make a unique hash to identify this post
+        let uniqueString = newPost.date!.description
+            + newPost.title!
+            + (newPost.author ?? "")
+        newPost.uniqueHash = MD5(string: uniqueString)
         return newPost
     }
 
@@ -423,11 +394,11 @@ class RSSFeeds {
     private func updateAggregatedFeed(forFeedId feedId: Int,
                                       postsForFeed: [RSSFeedPost])
                                       -> ([RSSFeedPostSummary], [Int], [Int]) {
-        if DEBUG  { NSLog ("*** updateAggregatedFeed: started for feed: \(feedId) Current count: \(self.aggregatedFeed.count)") }
-        
         objc_sync_enter("updateAggregatedFeed_critical_section")
         defer { objc_sync_exit("updateAggregatedFeed_critical_section") }
         
+        DEBUG_LOG ("*** updateAggregatedFeed: in critical_section for feed: \(feedId) Current count: \(self.aggregatedFeed.count)")
+                                        
         self.feedPosts[feedId] = postsForFeed
 
         var currentFeed = self.aggregatedFeed
@@ -476,12 +447,12 @@ class RSSFeeds {
         }
 
         // Update our current aggregated feed and return the affected post indices to caller
-        if self.DEBUG  { NSLog ("*** updateAggregatedFeed: finished for feed: \(feedId) \(feedsInfo[feedId]!.name)\n  Old count: \(self.aggregatedFeed.count)\n  Insertions: \(indicesOfNewPosts.count)\n  Deletions: \(indicesOfDeletedPosts.count)\n  New count: \(newAggregatedFeed.count)") }
+        DEBUG_LOG ("*** updateAggregatedFeed: leaving critical section for feed: \(feedId) \(feedsInfo[feedId]!.name)\n  Old count: \(self.aggregatedFeed.count)\n  Insertions: \(indicesOfNewPosts.count)\n  Deletions: \(indicesOfDeletedPosts.count)\n  New count: \(newAggregatedFeed.count)")
         self.aggregatedFeed = newAggregatedFeed
         return (newAggregatedFeed, indicesOfDeletedPosts, indicesOfNewPosts)
     }
     
-    // Grab all of the posts current in all feeds and sort them by date/time
+    // Grab all of the posts currently in all feeds and sort them by date/time
     private func makeAggregatedFeed() -> [RSSFeedPostSummary] {
         var aggregatedFeed = [RSSFeedPostSummary]()
         for feedInfo in self.feedsInfo.values {

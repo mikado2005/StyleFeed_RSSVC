@@ -38,8 +38,8 @@ class AppAttributes: NSObject {
     // MARK: UI styles
     // Font and color of UINavigationController Bar Items
     @objc public static let navigationBarItemAttributes =
-        [NSAttributedStringKey.font: UIFont(name: defaultFontName, size: 18)!,
-         NSAttributedStringKey.foregroundColor: greyishBrownColor]
+        [NSAttributedString.Key.font: UIFont(name: defaultFontName, size: 18)!,
+         NSAttributedString.Key.foregroundColor: greyishBrownColor]
     
     // MARK: Other definitions
     @objc public static let onboardingStoryboardName = "Onboarding"
