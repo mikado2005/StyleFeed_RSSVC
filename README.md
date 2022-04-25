@@ -18,4 +18,11 @@ In the terminal app:
 - $ open StyleFeed_RSSVC.xcworkspace
 - Build and run in Xcode
 ### Usage
-This app will load the current contents of 10 fashion-oriented RSS feeds and aggregate their postings by date, with the latest posts appearing first in the list.  Tap on any post title or image to read the associated article.
+This app will load the current contents of 10 fashion-oriented RSS feeds and aggregate their postings by date, with the latest posts appearing first in the list.  There are usually 400-500 postings in total.  Tap on any post title or image to read the associated article.
+
+### Issues
+1. There is one major bug that may crash the app.  The app does a lot of its work in background threads, and there is still a threading issue which sometimes causes the app to crash with a rather unusual exception: the number of cells in the UITableView that contains the RSS posts becomes corrupted, which causes the next set of cell insertions and deletions to raise an exception.  The crash happens rather randomly, but one way to make it happen is to scroll the UITableView down, quickly, immediately after first launching the app.
+
+* I'm sorry I haven't yet had a chance to track this bug down and kill it!
+
+2. This code is about 4 years old.  I have updated it in 2022 to run on iOS 15, and to use the latest versions of the two CocoaPods it requires.  But it doesn't make use of the latest features of Swift 5.
